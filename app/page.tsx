@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Header from "./components/Header";
 import Formulaire from "./components/Formulaire";
 
-const home = () => {
+export default function home  () {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -30,4 +30,4 @@ const home = () => {
     </div>
   );
 };
-export default home;
+
