@@ -1,4 +1,4 @@
-import { integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, text, timestamp,varchar } from "drizzle-orm/pg-core";
 import { defineRelations } from "drizzle-orm"
 
 export const programmesTable = pgTable("programmes", {
@@ -16,12 +16,14 @@ export const projectsTable = pgTable("projects", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   title: text("title").notNull(),
   thumbnail: text("thumbnail"),
+  adresseweb: varchar("adresse_web",{length: 150}),
   gitHubLink: text("gitHub_link").notNull(),
   demoLink: text("demo_link"),
   creationDate: timestamp("creation_date").defaultNow(),
   publicationDate: timestamp("publication_date").defaultNow(),
-  programmeId: integer("programme_id").references(() => programmesTable.id).notNull(),
   promotionId: integer("promotion_id").references(() => promotionsTable.id).notNull(),
+  programmeId: integer("programme_id").references(() => programmesTable.id).notNull(),
+
 });
 
 export const relations = defineRelations(
