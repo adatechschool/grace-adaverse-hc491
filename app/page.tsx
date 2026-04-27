@@ -4,16 +4,44 @@ import React, { useState } from "react";
 import Header from "./components/Header";
 import Formulaire from "./components/Formulaire";
 
-export default function home  () {
+export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
+
+  const handleOpenModal = (): boolean => {
+    try {
+      setIsModalOpen(true);
+      return true;
+    } catch (error) {
+      console.error("Erreur lors de l'ouverture du modal", error);
+      return false;
+    }
   };
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+
+  const handleCloseModal = (): boolean => {
+    try {
+      setIsModalOpen(false);
+      return true;
+    } catch (error) {
+      console.error("Erreur lors de la fermeture du modal", error);
+      return false;
+    }
   };
-  const handleFormSubmit = (data: { title: string; gitHubLink: string }) => {
-    console.log("Projet soumis : ", data);
+
+  const handleFormSubmit = async (data: {
+    title: string;
+    gitHubLink: string;
+    demoLink?: string;
+    promoAda: string;
+    projetAda: string;
+  }): Promise<boolean> => {
+    try {
+      console.log("Projet soumis : ", data);
+
+      return true;
+    } catch (error) {
+      console.error("Erreur lors du traitement du formulaire :", error);
+      return false;
+    }
   };
 
   return (
@@ -29,5 +57,4 @@ export default function home  () {
       )}
     </div>
   );
-};
-
+}

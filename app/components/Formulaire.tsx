@@ -3,16 +3,17 @@
 import React, { useEffect, useState } from "react";
 import { getProgrammesPromotions } from "../actions/projectsActions";
 import type { Programme, Promotion } from "@/src/db/types";
+import { addProject } from "@/src/db/lib/actions";
 
 interface FormulaireProps {
-  closeModal: () => void;
+  closeModal: () => boolean;
   onSubmit: (data: {
     title: string;
     gitHubLink: string;
-    demoLink: string;
+    demoLink?: string;
     promoAda: string;
     projetAda: string;
-  }) => void;
+  }) => Promise<boolean>;
 }
 
 export default function Formulaire({ closeModal, onSubmit }: FormulaireProps) {
@@ -41,7 +42,7 @@ export default function Formulaire({ closeModal, onSubmit }: FormulaireProps) {
 
   useEffect(() => {
     if (formSubmitted) {
-      if (!title || !gitHubLink || !demoLink) {
+      if (!title || !gitHubLink) {
         setError("Tous les champs sont obligatoires !");
       } else {
         setError(null);
@@ -49,74 +50,43 @@ export default function Formulaire({ closeModal, onSubmit }: FormulaireProps) {
     }
   }, [title, gitHubLink, demoLink, formSubmitted]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  
+  // On n'utilise plus handleSubmit pour l'instant
+  const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     setFormSubmitted(true);
-
-    if (!title || !gitHubLink || !demoLink || !promoAda || !projetAda) {
-      setError("Tous les champs sont obligatoires!");
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/projects", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title,
-          gitHubLink,
-          demoLink,
-          promoAda,
-          projetAda,
-        }),
-      });
-      const result = await response.json();
-      if (response.ok) {
-        onSubmit({ title, gitHubLink, demoLink, promoAda, projetAda });
-
-        setTitle("");
-        setGitHubLink("");
-        setDemoLink("");
-        setPromoAda("");
-        setProjetAda("");
-        setError(null);
-        closeModal();
-      } else {
-        setError(result.message || "Erreur lors de la soumission du projet");
-      }
-    } catch (error) {
-      console.error("Erreur lors de la soumission:", error);
-      setError("Une erreur est survenue lors de la soumission");
-    }
   };
 
   return (
     <div className="bg-white p-6 rounded-lg w-96">
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      <form onSubmit={handleSubmit}>
+      <form action={addProject}>
         <label className="block mb-2">Titre du projet</label>
         <input
+          name="title"
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded mb-4"
           placeholder="Titre du projet"
+          required
         />
 
         <label className="block mb-2">Lien Github</label>
         <input
+          name="github"
           type="url"
           value={gitHubLink}
           onChange={(e) => setGitHubLink(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded mb-4"
           placeholder="https://github.com/..."
+          required
         />
 
         <label className="block mb-2">Lien de démo</label>
         <input
+          name="demo"
           type="url"
           value={demoLink}
           onChange={(e) => setDemoLink(e.target.value)}
@@ -126,9 +96,11 @@ export default function Formulaire({ closeModal, onSubmit }: FormulaireProps) {
 
         <label className="block mb-2">Promotion</label>
         <select
+          name="promoId"
           value={promoAda}
           onChange={(e) => setPromoAda(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded mb-4"
+          required
         >
           <option value="">Sélectionnez une promotion</option>
           {promotions.map((p: Promotion) => (
@@ -140,9 +112,11 @@ export default function Formulaire({ closeModal, onSubmit }: FormulaireProps) {
 
         <label className="block mb-2">Programme</label>
         <select
+          name="progId"
           value={projetAda}
           onChange={(e) => setProjetAda(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded mb-4"
+          required
         >
           <option value="">Sélectionnez un programme</option>
           {programmes.map((pr: Programme) => (

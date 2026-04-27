@@ -1,0 +1,1 @@
+ALTER TABLE "projects" ALTER COLUMN "demo_link" DROP NOT NULL;

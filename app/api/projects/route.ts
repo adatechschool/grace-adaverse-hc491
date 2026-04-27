@@ -2,15 +2,17 @@ import { NextResponse } from "next/server";
 import { projectsTable } from "@/src/db/schema";
 import { db } from "@/src";
 import { integer } from "drizzle-orm/pg-core";
+import { log } from "console";
 
 export async function POST(request: Request) {
   try {
     const { title, gitHubLink, demoLink, programmeId, promotionId } =
       await request.json();
+    console.log(title, gitHubLink, demoLink, programmeId, promotionId);
 
-    if (!title || !gitHubLink || !demoLink || !programmeId || !promotionId) {
+    if (!title || !gitHubLink || !programmeId || !promotionId) {
       return NextResponse.json(
-        { message: "Tous les champs sont obligatoires !" },
+        { message: "Tous les champs sont obligatoires ! (back)" },
         { status: 400 },
       );
     }
@@ -22,6 +24,7 @@ export async function POST(request: Request) {
         gitHubLink,
         demoLink,
         programmeId,
+        promotionId,
         creationDate: new Date(),
         publicationDate: new Date(),
       })

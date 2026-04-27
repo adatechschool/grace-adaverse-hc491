@@ -17,11 +17,11 @@ export const projectsTable = pgTable("projects", {
   title: text("title").notNull(),
   thumbnail: text("thumbnail"),
   gitHubLink: text("gitHub_link").notNull(),
-  demoLink: text("demo_link").notNull(),
-  creationDate: timestamp("creation_date").defaultNow().notNull(),
-  publicationDate: timestamp("publication_date").defaultNow().notNull(),
-  programmeId: integer("programme_id").references(() => programmesTable.id),
-  promotionId: integer("promotion_id").references(() => promotionsTable.id),
+  demoLink: text("demo_link"),
+  creationDate: timestamp("creation_date").defaultNow(),
+  publicationDate: timestamp("publication_date").defaultNow(),
+  programmeId: integer("programme_id").references(() => programmesTable.id).notNull(),
+  promotionId: integer("promotion_id").references(() => promotionsTable.id).notNull(),
 });
 
 export const relations = defineRelations(
