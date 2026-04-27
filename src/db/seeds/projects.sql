@@ -1,5 +1,5 @@
 INSERT INTO "projects"
-(title, thumbnail, adresse_web, gitHub_link, demo_link, creation_date, publication_date, promotion_id,programmes_id)
+(title, thumbnail, adresse_web, gitHub_link, demo_link, creation_date, publication_date, promotion_id,programme_id)
 VALUES
 
 -- ========== PROMOTION GRACE HOPPER (id: 1) ==========

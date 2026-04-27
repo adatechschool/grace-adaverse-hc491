@@ -1,9 +1,9 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "43e044ea-76ca-455b-b592-76180bfe4b53",
+  "id": "43b15ebe-170c-4f79-bf6a-459794994f1c",
   "prevIds": [
-    "27b9d580-31a7-4d90-acb8-4b26927480c0"
+    "00000000-0000-0000-0000-000000000000"
   ],
   "ddl": [
     {
@@ -99,6 +99,19 @@
       "table": "projects"
     },
     {
+      "type": "varchar(150)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "adresse_web",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "projects"
+    },
+    {
       "type": "text",
       "typeSchema": null,
       "notNull": true,
@@ -106,7 +119,7 @@
       "default": null,
       "generated": null,
       "identity": null,
-      "name": "gitHub_link",
+      "name": "github_link",
       "entityType": "columns",
       "schema": "public",
       "table": "projects"
@@ -127,7 +140,7 @@
     {
       "type": "timestamp",
       "typeSchema": null,
-      "notNull": true,
+      "notNull": false,
       "dimensions": 0,
       "default": "now()",
       "generated": null,
@@ -140,7 +153,7 @@
     {
       "type": "timestamp",
       "typeSchema": null,
-      "notNull": true,
+      "notNull": false,
       "dimensions": 0,
       "default": "now()",
       "generated": null,
@@ -153,12 +166,12 @@
     {
       "type": "integer",
       "typeSchema": null,
-      "notNull": false,
+      "notNull": true,
       "dimensions": 0,
       "default": null,
       "generated": null,
       "identity": null,
-      "name": "programme_id",
+      "name": "promotion_id",
       "entityType": "columns",
       "schema": "public",
       "table": "projects"
@@ -166,12 +179,12 @@
     {
       "type": "integer",
       "typeSchema": null,
-      "notNull": false,
+      "notNull": true,
       "dimensions": 0,
       "default": null,
       "generated": null,
       "identity": null,
-      "name": "promotion_id",
+      "name": "programme_id",
       "entityType": "columns",
       "schema": "public",
       "table": "projects"
@@ -218,23 +231,6 @@
     {
       "nameExplicit": false,
       "columns": [
-        "programme_id"
-      ],
-      "schemaTo": "public",
-      "tableTo": "programmes",
-      "columnsTo": [
-        "id"
-      ],
-      "onUpdate": "NO ACTION",
-      "onDelete": "NO ACTION",
-      "name": "projects_programme_id_programmes_id_fkey",
-      "entityType": "fks",
-      "schema": "public",
-      "table": "projects"
-    },
-    {
-      "nameExplicit": false,
-      "columns": [
         "promotion_id"
       ],
       "schemaTo": "public",
@@ -245,6 +241,23 @@
       "onUpdate": "NO ACTION",
       "onDelete": "NO ACTION",
       "name": "projects_promotion_id_promotions_id_fkey",
+      "entityType": "fks",
+      "schema": "public",
+      "table": "projects"
+    },
+    {
+      "nameExplicit": false,
+      "columns": [
+        "programme_id"
+      ],
+      "schemaTo": "public",
+      "tableTo": "programmes",
+      "columnsTo": [
+        "id"
+      ],
+      "onUpdate": "NO ACTION",
+      "onDelete": "NO ACTION",
+      "name": "projects_programme_id_programmes_id_fkey",
       "entityType": "fks",
       "schema": "public",
       "table": "projects"

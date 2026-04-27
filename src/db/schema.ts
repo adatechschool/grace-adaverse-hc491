@@ -1,5 +1,12 @@
-import { integer, pgTable, serial, text, timestamp,varchar } from "drizzle-orm/pg-core";
-import { defineRelations } from "drizzle-orm"
+import {
+  integer,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+  varchar,
+} from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm/_relations";
 
 export const programmesTable = pgTable("programmes", {
   id: serial("id").primaryKey(),
@@ -16,33 +23,42 @@ export const projectsTable = pgTable("projects", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   title: text("title").notNull(),
   thumbnail: text("thumbnail"),
-  adresseweb: varchar("adresse_web",{length: 150}),
-  gitHubLink: text("gitHub_link").notNull(),
+  adresseweb: varchar("adresse_web", { length: 150 }),
+  gitHubLink: text("github_link").notNull(),
   demoLink: text("demo_link"),
   creationDate: timestamp("creation_date").defaultNow(),
   publicationDate: timestamp("publication_date").defaultNow(),
-  promotionId: integer("promotion_id").references(() => promotionsTable.id).notNull(),
-  programmeId: integer("programme_id").references(() => programmesTable.id).notNull(),
-
+  promotionId: integer("promotion_id")
+    .references(() => promotionsTable.id)
+    .notNull(),
+  programmeId: integer("programme_id")
+    .references(() => programmesTable.id)
+    .notNull(),
 });
 
-export const relations = defineRelations(
-  { programmesTable, promotionsTable, projectsTable }, (r) => ({
-    programmesTable: {
-      projects: r.many.projectsTable(),
-    },
-    promotionsTable: {
-      projects: r.many.projectsTable(),
-    },
-    projectsTable: {
-      programme: r.one.programmesTable({
-        from: r.projectsTable.programmeId,
-        to: r.programmesTable.id,
-      }),
-      promotion: r.one.promotionsTable({
-        from: r.projectsTable.promotionId,
-        to: r.promotionsTable.id,
-      }),
-    },
+//Relations one to one (du point de vue de projetEtudiant)
+export const projetEtudiantToAdaRelations = relations(
+  projectsTable,
+  ({ one }) => ({
+    // relation 1 projetEtudiant a 1 promoAda
+    promo: one(promotionsTable, {
+      fields: [projectsTable.promotionId],
+      references: [promotionsTable.id],
+    }),
+    // relation 1 projetEtudiant a 1 projetAda
+    projet: one(programmesTable, {
+      fields: [projectsTable.programmeId],
+      references: [programmesTable.id],
+    }),
   }),
 );
+
+//Relations many to one
+// relation 1 projetAda a many projetEtudiant
+export const projetAdaRelations = relations(programmesTable, ({ many }) => ({
+  projetsEtudiants: many(projectsTable),
+}));
+// relation 1 promoAda a many projetEtudiant
+export const promoAdaRelations = relations(promotionsTable, ({ many }) => ({
+  projetsEtudiants: many(projectsTable),
+}));

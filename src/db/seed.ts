@@ -22,7 +22,8 @@ async function seed() {
     ]; //Liste des fichiers SQL à exécuter dans l'ordre
 
     for (const file of seedFiles) {
-      const filePath = path.join(__dirname, "seeds", file);//Construit chemin absolu vers le fichier SQL
+      const filePath = path.join(process.cwd(), "src", "db", "seeds", file);
+      console.log(`Chemin du fichier SQL: ${filePath}`);//Construit chemin absolu vers le fichier SQL
       const sqlContent = fs.readFileSync(filePath, "utf-8");//Lit le contenu du fichier SQL
 
       console.log(`📄 Exécution de ${file}...`);
