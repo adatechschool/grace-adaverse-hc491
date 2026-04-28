@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Header({ openModal }: { openModal: () => boolean }) {
+export default function Header({ openModal }: { openModal: () => void }) {
   return (
     <header className="bg-blue-200">
       <div className="flex flex-col items-center">
@@ -15,5 +15,3 @@ export default function Header({ openModal }: { openModal: () => boolean }) {
     </header>
   );
 }
-
-

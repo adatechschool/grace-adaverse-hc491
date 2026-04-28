@@ -6,7 +6,7 @@ import type { Programme, Promotion } from "@/src/db/types";
 import { addProject } from "@/src/db/lib/actions";
 
 interface FormulaireProps {
-  closeModal: () => boolean;
+  closeModal: () => void;
   onSubmit: (data: {
     title: string;
     gitHubLink: string;
