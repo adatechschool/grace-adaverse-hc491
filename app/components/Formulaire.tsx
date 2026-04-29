@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { getProgrammesPromotions } from "../actions/projectsActions";
+import React, { useState } from "react";
 import type { Programme, Promotion } from "@/src/db/types";
 import { addProject } from "@/src/db/lib/actions";
 
@@ -14,54 +13,51 @@ interface FormulaireProps {
     promoAda: string;
     projetAda: string;
   }) => Promise<boolean>;
+  programmes: Programme[];
+  promotions: Promotion[];
 }
 
-export default function Formulaire({ closeModal, onSubmit }: FormulaireProps) {
+export default function Formulaire({
+  closeModal,
+  onSubmit,
+  programmes,
+  promotions,
+}: FormulaireProps) {
   const [title, setTitle] = useState("");
   const [gitHubLink, setGitHubLink] = useState("");
   const [demoLink, setDemoLink] = useState("");
   const [promoAda, setPromoAda] = useState("");
   const [projetAda, setProjetAda] = useState("");
-  const [programmes, setProgrammes] = useState<Programme[]>([]);
-  const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [formSubmitted, setFormSubmitted] = useState(false);
 
-  useEffect(() => {
-    const fetchProgrammesPromotions = async () => {
-      try {
-        const { programmes, promotions } = await getProgrammesPromotions();
-        setProgrammes(programmes);
-        setPromotions(promotions);
-      } catch (error) {
-        console.error("Erreur", error);
-      }
-    };
-    fetchProgrammesPromotions();
-  }, []);
-
-  useEffect(() => {
-    if (formSubmitted) {
-      if (!title || !gitHubLink) {
-        setError("Tous les champs sont obligatoires !");
-      } else {
-        setError(null);
-      }
-    }
-  }, [title, gitHubLink, demoLink, formSubmitted]);
-
-  
-  // On n'utilise plus handleSubmit pour l'instant
-  const handleSubmit = (e: React.FormEvent): void => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
-    setFormSubmitted(true);
+
+    if (!title || !gitHubLink || !promoAda || !projetAda) {
+      setError("Tous les champs obligatoires doivent être remplis !");
+      return;
+    }
+
+    setError(null);
+
+    const success = await onSubmit({
+      title,
+      gitHubLink,
+      demoLink: demoLink || undefined,
+      promoAda,
+      projetAda,
+    });
+
+    if (success) {
+      closeModal();
+    }
   };
 
   return (
     <div className="bg-white p-6 rounded-lg w-96">
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      <form action={addProject}>
+      <form onSubmit={handleSubmit}>
         <label className="block mb-2">Titre du projet</label>
         <input
           name="title"
@@ -103,7 +99,7 @@ export default function Formulaire({ closeModal, onSubmit }: FormulaireProps) {
           required
         >
           <option value="">Sélectionnez une promotion</option>
-          {promotions.map((p: Promotion) => (
+          {promotions.map((p) => (
             <option key={p.id} value={String(p.id)}>
               {p.name}
             </option>
@@ -119,7 +115,7 @@ export default function Formulaire({ closeModal, onSubmit }: FormulaireProps) {
           required
         >
           <option value="">Sélectionnez un programme</option>
-          {programmes.map((pr: Programme) => (
+          {programmes.map((pr) => (
             <option key={pr.id} value={String(pr.id)}>
               {pr.name}
             </option>

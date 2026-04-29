@@ -13,11 +13,11 @@ export type Project = {
   id: number;
   title: string;
   thumbnail: string | null;
-  adresseweb: string;
+  adresseweb: string | null;
   gitHubLink: string;
   demoLink: string | null;
-  creationDate: string;
-  publicationDate: string | null;
+  creationDate: Date | null;
+  publicationDate: Date | null;
   promotionId: number;
   programmeId: number;
 }
