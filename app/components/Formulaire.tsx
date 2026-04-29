@@ -30,34 +30,38 @@ export default function Formulaire({
   const [projetAda, setProjetAda] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault();
+   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
+    closeModal()
 
-    if (!title || !gitHubLink || !promoAda || !projetAda) {
-      setError("Tous les champs obligatoires doivent être remplis !");
-      return;
-    }
+  //   e.preventDefault();
+    // console.log("click ok");
+    
 
-    setError(null);
+    // if (!title || !gitHubLink || !promoAda || !projetAda) {
+    //   setError("Tous les champs obligatoires doivent être remplis !");
+    //   return;
+    // }
 
-    const success = await onSubmit({
-      title,
-      gitHubLink,
-      demoLink: demoLink || undefined,
-      promoAda,
-      projetAda,
-    });
+    // setError(null);
 
-    if (success) {
-      closeModal();
-    }
+    // const success = await onSubmit({
+    //   title,
+    //   gitHubLink,
+    //   demoLink: demoLink || undefined,
+    //   promoAda,
+    //   projetAda,
+    // });
+
+    // if (success) {
+    //   closeModal();
+    // }
   };
 
   return (
     <div className="bg-white p-6 rounded-lg w-96">
       {error && <p className="text-red-500 mb-4">{error}</p>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={()=>closeModal()} action={addProject}>
         <label className="block mb-2">Titre du projet</label>
         <input
           name="title"

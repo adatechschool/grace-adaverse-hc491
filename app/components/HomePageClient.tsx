@@ -32,17 +32,16 @@ export default function HomePageClient({
 
   // Génère l'URL de l'image du projet à partir du lien GitHub
  function getGithubImage(url: string): string | null {
-  try {
+  
     const parts = url.split("/");
     const user = parts[3];
     const repo = parts[4];
     if (!user || !repo) return null;
 
     return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
-  } catch {
-    return null;
-  }
+  
 }
+
 
   return (
     <div>
@@ -71,9 +70,9 @@ export default function HomePageClient({
                 <p>
                   {promotions.find((p) => p.id === project.promotionId)?.name}
                 </p>
-                <div key={project.id}>
+                <div>
                   <ImageProjet
-                    src={getGithubImage(project.gitHubLink) ?? ""}
+                    src={getGithubImage(project.gitHubLink)??""}
                     alt={project.title}
                   />
                 </div>
