@@ -75,7 +75,7 @@ export default function Formulaire({
 
         <label className="block mb-2">Lien Github</label>
         <input
-          name="github"
+          name="gitHubLink"
           type="url"
           value={gitHubLink}
           onChange={(e) => setGitHubLink(e.target.value)}
@@ -86,7 +86,7 @@ export default function Formulaire({
 
         <label className="block mb-2">Lien de démo</label>
         <input
-          name="demo"
+          name="demoLink"
           type="url"
           value={demoLink}
           onChange={(e) => setDemoLink(e.target.value)}
@@ -96,7 +96,7 @@ export default function Formulaire({
 
         <label className="block mb-2">Promotion</label>
         <select
-          name="promoId"
+          name="promotionId"
           value={promoAda}
           onChange={(e) => setPromoAda(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded mb-4"
@@ -112,7 +112,7 @@ export default function Formulaire({
 
         <label className="block mb-2">Programme</label>
         <select
-          name="progId"
+          name="programmeId"
           value={projetAda}
           onChange={(e) => setProjetAda(e.target.value)}
           className="w-full p-2 border border-gray-300 rounded mb-4"
