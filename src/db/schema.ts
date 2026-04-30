@@ -6,7 +6,7 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { relations } from "drizzle-orm/_relations";
+import { relations } from 'drizzle-orm'
 
 export const programmesTable = pgTable("programmes", {
   id: serial("id").primaryKey(),
