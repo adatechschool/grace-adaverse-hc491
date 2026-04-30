@@ -2,7 +2,7 @@
 import { db } from "@/src";
 import { programmesTable, projectsTable, promotionsTable } from "../schema";
 import * as z from "zod";
-import { eq, InferInsertModel } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export async function addProject(formData: FormData) {
   const promoIdNum = Number(formData.get("promotionId"));
