@@ -3,10 +3,11 @@ import Link from "next/link";
 
 interface HeaderProps {
 openModal: () => void;
-openModalSignOut: () => void;
+openModalRegister: () => void;
+openModalSignIn: () => void;
 }
 
-export default function Header({ openModal, openModalSignOut }: HeaderProps) {
+export default function Header({ openModal, openModalRegister, openModalSignIn }: HeaderProps) {
   return (
     <header className="bg-blue-200">
       <div className="flex flex-col items-center">
@@ -19,7 +20,8 @@ export default function Header({ openModal, openModalSignOut }: HeaderProps) {
         >
           Proposer un projet
         </button>
-        <button className="bg-blue-400 text-black px-4 py-2 rounded" onClick={openModalSignOut}>Se déconnecter</button>
+        <button className="bg-blue-400 text-black px-4 py-2 rounded" onClick={openModalRegister}>S'inscrire</button>
+        <button className="bg-blue-400 text-black px-4 py-2 rounded" onClick={openModalSignIn}>Se connecter</button>
         </div>
       </div>
 

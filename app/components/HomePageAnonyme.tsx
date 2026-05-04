@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Header from "./Header";
+import Header from "./HeaderAnonyme";
 import Modal from "./Modal";
 import { Programme, Promotion, Project } from "@/src/db/types";
 import ImageProjet from "./ImageProjet";
@@ -15,13 +15,14 @@ type Props = {
   projects: Project[];
 };
 
-export default function HomePageClient({
+export default function HomePageAnonyme({
   programmes,
   promotions,
   projects,
 }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalSignOutOpen, setIsModalSignOutOpen] = useState(false);  
+  const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
+  const [isModalSignInOpen, setIsModalSignInOpen] = useState(false);
 
   const handleSubmit = async (data: {
     title: string;
@@ -51,12 +52,20 @@ export default function HomePageClient({
     <div>
       <Header 
       openModal={() => setIsModalOpen(true)}
-      openModalSignOut={() => setIsModalSignOutOpen(true)}
+      openModalRegister={() => setIsModalRegisterOpen(true)}
+      openModalSignIn={() => setIsModalSignInOpen(true)}
        />
 
-      {isModalSignOutOpen && (
-        <ModalSignOut
-          onClose={() => setIsModalSignOutOpen(false)}
+       {isModalRegisterOpen && (
+        <ModalRegister
+          onClose={() => setIsModalRegisterOpen(false)}
+        />
+      )}
+
+      
+       {isModalSignInOpen && (
+        <ModalSignIn
+          onClose={() => setIsModalSignInOpen(false)}
         />
       )}
 
