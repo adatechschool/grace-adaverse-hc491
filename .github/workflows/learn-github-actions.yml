@@ -10,8 +10,5 @@ jobs:
         with:
           node-version: '20'
       - run: npm install
-  test: 
-    runs-on: ubuntu-latest
-    steps :
-    - run : npm test
+      - run : npm test
 
