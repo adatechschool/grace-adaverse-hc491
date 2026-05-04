@@ -30,33 +30,6 @@ export default function Formulaire({
   const [projetAda, setProjetAda] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
-    closeModal()
-
-  //   e.preventDefault();
-    // console.log("click ok");
-    
-
-    // if (!title || !gitHubLink || !promoAda || !projetAda) {
-    //   setError("Tous les champs obligatoires doivent être remplis !");
-    //   return;
-    // }
-
-    // setError(null);
-
-    // const success = await onSubmit({
-    //   title,
-    //   gitHubLink,
-    //   demoLink: demoLink || undefined,
-    //   promoAda,
-    //   projetAda,
-    // });
-
-    // if (success) {
-    //   closeModal();
-    // }
-  };
-
   return (
     <div className="bg-white p-6 rounded-lg w-96">
       {error && <p className="text-red-500 mb-4">{error}</p>}

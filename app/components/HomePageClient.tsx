@@ -5,6 +5,8 @@ import Header from "./Header";
 import Modal from "./Modal";
 import { Programme, Promotion, Project } from "@/src/db/types";
 import ImageProjet from "./ImageProjet";
+import ModalRegister from "./ModalRegister";
+import ModalSignIn from "./ModalSignIn";
 
 type Props = {
   programmes: Programme[];
@@ -18,6 +20,8 @@ export default function HomePageClient({
   projects,
 }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
+  const [isModalSignInOpen, setIsModalSignInOpen] = useState(false);
 
   const handleSubmit = async (data: {
     title: string;
@@ -45,7 +49,24 @@ export default function HomePageClient({
 
   return (
     <div>
-      <Header openModal={() => setIsModalOpen(true)} />
+      <Header 
+      openModal={() => setIsModalOpen(true)}
+      openModalRegister={() => setIsModalRegisterOpen(true)}
+      openModalSignIn={() => setIsModalSignInOpen(true)}
+       />
+
+       {isModalRegisterOpen && (
+        <ModalRegister
+          onClose={() => setIsModalRegisterOpen(false)}
+        />
+      )}
+
+      
+       {isModalSignInOpen && (
+        <ModalSignIn
+          onClose={() => setIsModalSignInOpen(false)}
+        />
+      )}
 
       {isModalOpen && (
         <Modal

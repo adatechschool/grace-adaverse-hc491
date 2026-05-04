@@ -74,7 +74,6 @@ export async function addProject(formData: FormData) {
   }
 }
 
-"use server";
 import { auth } from "@/auth";
 import {headers} from "next/headers";
 import {redirect} from "next/navigation";
@@ -122,6 +121,9 @@ export const signin = async (formData: FormData) => {
         redirect("/auth/signin?error=true");
     }
 
+    if (response.ok) {
+      console.log("C'est bon on est connecté")
+    }
     redirect("/"); // on redirige vers la home page une fois connecté
 };
 
