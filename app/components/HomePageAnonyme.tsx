@@ -8,6 +8,8 @@ import ImageProjet from "./ImageProjet";
 import ModalRegister from "./ModalRegister";
 import ModalSignIn from "./ModalSignIn";
 import ModalSignOut from "./ModalSignOut";
+import ModalProjetConnexion from "./ModalProjetConnexion";
+import HeaderAnonyme from "./HeaderAnonyme";
 
 type Props = {
   programmes: Programme[];
@@ -20,9 +22,10 @@ export default function HomePageAnonyme({
   promotions,
   projects,
 }: Props) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
   const [isModalSignInOpen, setIsModalSignInOpen] = useState(false);
+  const [isModalProjetConnexionOpen, setIsModalProjetConnexionOpen] =
+    useState(false);
 
   const handleSubmit = async (data: {
     title: string;
@@ -36,45 +39,34 @@ export default function HomePageAnonyme({
   };
 
   // Génère l'URL de l'image du projet à partir du lien GitHub
- function getGithubImage(url: string): string | null {
-  
+  function getGithubImage(url: string): string | null {
     const parts = url.split("/");
     const user = parts[3];
     const repo = parts[4];
     if (!user || !repo) return null;
 
     return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
-  
-}
-
+  }
 
   return (
     <div>
-      <Header 
-      openModal={() => setIsModalOpen(true)}
-      openModalRegister={() => setIsModalRegisterOpen(true)}
-      openModalSignIn={() => setIsModalSignInOpen(true)}
-       />
+      <HeaderAnonyme
+        openModalRegister={() => setIsModalRegisterOpen(true)}
+        openModalSignIn={() => setIsModalSignInOpen(true)}
+        openModalProjetConnexion={() => setIsModalProjetConnexionOpen(true)}
+      />
 
-       {isModalRegisterOpen && (
-        <ModalRegister
-          onClose={() => setIsModalRegisterOpen(false)}
-        />
+      {isModalRegisterOpen && (
+        <ModalRegister onClose={() => setIsModalRegisterOpen(false)} />
       )}
 
-      
-       {isModalSignInOpen && (
-        <ModalSignIn
-          onClose={() => setIsModalSignInOpen(false)}
-        />
+      {isModalSignInOpen && (
+        <ModalSignIn onClose={() => setIsModalSignInOpen(false)} />
       )}
 
-      {isModalOpen && (
-        <Modal
-          programme={programmes}
-          promotion={promotions}
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleSubmit}
+      {isModalProjetConnexionOpen && (
+        <ModalProjetConnexion
+          onClose={() => setIsModalProjetConnexionOpen(false)}
         />
       )}
 
@@ -94,7 +86,7 @@ export default function HomePageAnonyme({
                 </p>
                 <div>
                   <ImageProjet
-                    src={getGithubImage(project.gitHubLink)??""}
+                    src={getGithubImage(project.gitHubLink) ?? ""}
                     alt={project.title}
                   />
                 </div>
