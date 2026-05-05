@@ -15,6 +15,13 @@
       "when": 1777967669468,
       "tag": "0001_numerous_johnny_storm",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1777970189419,
+      "tag": "0002_true_masked_marvel",
+      "breakpoints": true
     }
   ]
 }

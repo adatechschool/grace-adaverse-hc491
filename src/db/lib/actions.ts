@@ -3,6 +3,7 @@ import { db } from "@/src";
 import { programmesTable, projectsTable, promotionsTable } from "../schema";
 import * as z from "zod";
 import { eq } from "drizzle-orm";
+import { Project } from "../types";
 
 export async function addProject(formData: FormData) {
   const promoIdNum = Number(formData.get("promotionId"));
@@ -77,6 +78,7 @@ export async function addProject(formData: FormData) {
 import { auth } from "@/auth";
 import {headers} from "next/headers";
 import {redirect} from "next/navigation";
+import { refresh } from "next/cache";
 
 export const signup = async (formData: FormData) => {
     const name = formData.get("name") as string;
@@ -128,5 +130,10 @@ export const signin = async (formData: FormData) => {
 };
 
 export const signout = async () => {
-    await auth.api.signOut({headers: await headers()}); // attention à bien passer les headers !
+  await auth.api.signOut({headers: await headers()}); // attention à bien passer les headers !
 };
+
+export async function publier(project : Project) {
+  await db.update(projectsTable).set({publicationDate : new Date}).where(eq(projectsTable.id, project.id));
+  refresh();
+    }

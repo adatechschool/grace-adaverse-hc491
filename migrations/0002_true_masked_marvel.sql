@@ -1,0 +1,1 @@
+ALTER TABLE "projects" ALTER COLUMN "publication_date" DROP DEFAULT;
