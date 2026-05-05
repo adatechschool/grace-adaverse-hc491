@@ -15,6 +15,7 @@ export default async function DetailsProject(props: {
 }) {
   const { detailsProject } = await props.params;
 
+
   const result = await db
     .select({
       id: projectsTable.id,
@@ -108,6 +109,7 @@ export default async function DetailsProject(props: {
             Voir la démo
           </a>
         )}
+        <Link href="/">Revenir à l'accueil</Link>
       </div>
     </div>
   );

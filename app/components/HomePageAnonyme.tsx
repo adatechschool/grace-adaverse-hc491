@@ -1,15 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import Header from "./HeaderAnonyme";
-import Modal from "./Modal";
 import { Programme, Promotion, Project } from "@/src/db/types";
 import ImageProjet from "./ImageProjet";
 import ModalRegister from "./ModalRegister";
 import ModalSignIn from "./ModalSignIn";
-import ModalSignOut from "./ModalSignOut";
 import ModalProjetConnexion from "./ModalProjetConnexion";
 import HeaderAnonyme from "./HeaderAnonyme";
+import Link from "next/link";
 
 type Props = {
   programmes: Programme[];
@@ -34,7 +32,6 @@ export default function HomePageAnonyme({
     promoAda: string;
     projetAda: string;
   }): Promise<boolean> => {
-    // ta logique de soumission ici
     return true;
   };
 
@@ -80,6 +77,7 @@ export default function HomePageAnonyme({
             <h1>{programme.name}</h1>
             {projectfilter.map((project) => (
               <div key={project.id}>
+                <Link href={`/${project.adresseweb}`}>
                 <h2>{project.title}</h2>
                 <p>
                   {promotions.find((p) => p.id === project.promotionId)?.name}
@@ -90,9 +88,11 @@ export default function HomePageAnonyme({
                     alt={project.title}
                   />
                 </div>
+                </Link>
               </div>
             ))}
           </div>
+          
         );
       })}
     </div>
