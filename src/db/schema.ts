@@ -28,11 +28,12 @@ export const projectsTable = pgTable("projects", {
   adresseweb: varchar("adresse_web", { length: 150 }),
   gitHubLink: text("github_link").notNull(),
   demoLink: text("demo_link"),
+  promotionId: integer("promotion_id")
+  .references(() => promotionsTable.id).notNull(),
   creationDate: timestamp("creation_date").defaultNow(),
   publicationDate: timestamp("publication_date"),
-  promotionId: integer("promotion_id")
-    .references(() => promotionsTable.id)
-    .notNull(),
+  userId: text("user_id")
+    .references(() => user.id),
   programmeId: integer("programme_id")
     .references(() => programmesTable.id)
     .notNull(),
