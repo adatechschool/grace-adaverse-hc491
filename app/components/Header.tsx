@@ -5,23 +5,81 @@ interface HeaderProps {
 
 export default function Header({ openModal, openModalSignOut }: HeaderProps) {
   return (
-    <header className="bg-blue-200">
-      <div className="flex flex-col items-center">
-        <h1 className="text-white text-xl mb-4">Projets Ada</h1>
+    <header className="bg-white border-b border-blue-100">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14">
+          {/* Logo / marque */}
+          <div className="flex items-center gap-2">
+            <span className="w-7 h-7 rounded-md bg-blue-400 flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-4 h-4 text-white"
+              >
+                <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337A49.95 49.95 0 0 0 12 10.333a49.95 49.95 0 0 0-10.6-2.276.75.75 0 0 1-.23-1.337A60.65 60.65 0 0 1 11.7 2.805Z" />
+                <path d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134.769.217 1.554.247 2.354a.75.75 0 0 1-.497.736 48.53 48.53 0 0 0-8.26 3.84.75.75 0 0 1-.771 0 48.53 48.53 0 0 0-8.26-3.84.75.75 0 0 1-.497-.736c.03-.8.113-1.585.247-2.354A48.45 48.45 0 0 1 10.94 15.473a2.25 2.25 0 0 0 2.12 0Z" />
+              </svg>
+            </span>
+            <span className="text-sm font-bold text-slate-800 tracking-tight font-mono">
+              Projets Ada
+            </span>
+          </div>
 
-        <div className="flex flex-row gap-2">
-          <button
-            className="bg-blue-400 text-black px-4 py-2 rounded"
-            onClick={openModal}
-          >
-            Proposer un projet
-          </button>
-          <button
-            className="bg-blue-400 text-black px-4 py-2 rounded"
-            onClick={openModalSignOut}
-          >
-            Se déconnecter
-          </button>
+          {/* Actions */}
+          <div className="flex items-center gap-2">
+            {/* Proposer un projet — bouton principal */}
+            <button
+              onClick={openModal}
+              className="flex items-center gap-1.5 bg-blue-400 hover:bg-blue-500
+                         text-white text-sm font-medium px-3.5 py-2 rounded-lg
+                         transition-colors duration-150"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.5v15m7.5-7.5h-15"
+                />
+              </svg>
+              <span className="hidden sm:inline">Proposer un projet</span>
+              <span className="sm:hidden">Proposer</span>
+            </button>
+
+            {/* Séparateur */}
+            <div className="w-px h-5 bg-blue-100" />
+
+            {/* Se déconnecter — ghost destructif */}
+            <button
+              onClick={openModalSignOut}
+              className="flex items-center gap-1.5 text-sm font-medium text-slate-500
+                         hover:text-red-500 hover:bg-red-50
+                         px-3.5 py-2 rounded-lg transition-all duration-150"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-4 h-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75"
+                />
+              </svg>
+              <span className="hidden sm:inline">Se déconnecter</span>
+            </button>
+          </div>
         </div>
       </div>
     </header>
