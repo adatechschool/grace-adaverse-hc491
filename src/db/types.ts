@@ -20,4 +20,5 @@ export type Project = {
   publicationDate: Date | null;
   promotionId: number;
   programmeId: number;
+  userId: string | null;
 }

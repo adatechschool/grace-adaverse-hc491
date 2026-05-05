@@ -43,8 +43,9 @@ export async function addProject(formData: FormData) {
   });
   const dataToValidate = Object.fromEntries(formData.entries());
   const result = Form.safeParse(dataToValidate);
-  console.log(dataToValidate);
-  console.log(result.data);
+
+  const session = await auth.api.getSession({headers: await headers()});
+  const userIdSession = session?.session.userId as string;
 
   if (result.success) {
     const {
@@ -54,7 +55,8 @@ export async function addProject(formData: FormData) {
       programmeId,
       promotionId,
       adresseweb,
-    } = { ...result.data, adresseweb: adresseLink };
+      userId
+    } = { ...result.data, adresseweb: adresseLink, userId: userIdSession };
 
     await db
       .insert(projectsTable)
@@ -65,6 +67,7 @@ export async function addProject(formData: FormData) {
         programmeId,
         promotionId,
         adresseweb,
+        userId
       });
     console.log("infos envoyées");
   }
