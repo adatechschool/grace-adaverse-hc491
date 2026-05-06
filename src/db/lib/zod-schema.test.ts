@@ -1,6 +1,5 @@
 import {describe, it, expect,test} from "vitest";
 import { Form } from "./zod-schema";
-import * as z from "zod";
 
 describe("Mon schema Zod", () => {
     const validData = {
