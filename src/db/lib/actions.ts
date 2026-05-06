@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { Project } from "../types";
 import { Form } from "./zod-schema";
 
+// Action pour envoyer un projet
 export async function addProject(formData: FormData) {
   const promoIdNum = Number(formData.get("promotionId"));
   const promoName = await db
@@ -25,9 +26,9 @@ export async function addProject(formData: FormData) {
   const title = (formData.get("title") as string).trim().split(" ")[0];
 
   const adresseLink = (promoNameClear + "-" + projetNameClear + "-" + title).toLowerCase();
-
   
   const dataToValidate = Object.fromEntries(formData.entries());
+  // const dataToValidate = {...dataFromForm, title : (formData.get("title") as string).trim()}
   const result = Form.safeParse(dataToValidate);
 
   const session = await auth.api.getSession({headers: await headers()});
@@ -64,6 +65,7 @@ export async function addProject(formData: FormData) {
   }
 }
 
+// Action pour créer un compte
 import { auth } from "@/auth";
 import {headers} from "next/headers";
 import {redirect} from "next/navigation";
@@ -93,6 +95,7 @@ export const signup = async (formData: FormData) => {
     redirect("/"); // on redirige vers la home page une fois connecté
 };
 
+// Action pour se connecter
 export const signin = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
