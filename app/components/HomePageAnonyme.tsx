@@ -33,9 +33,6 @@ export default function HomePageAnonyme({
     return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
   }
 
-  // Numérotation globale des projets pour l'affichage décoratif
-  let globalIndex = 0;
-
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -73,6 +70,7 @@ export default function HomePageAnonyme({
       {/* Contenu principal */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {programmes.map((programme) => {
+          let localIndex = 0;
           const projectfilter = projects.filter(
             (p) => p.programmeId === programme.id,
           );
@@ -100,8 +98,8 @@ export default function HomePageAnonyme({
                     (p) => p.id === project.promotionId,
                   )?.name;
 
-                  globalIndex++;
-                  const indexLabel = String(globalIndex).padStart(2, "0");
+                  localIndex++;
+                  const localIndexLabel = String(localIndex);
 
                   return (
                     <Link
@@ -128,7 +126,7 @@ export default function HomePageAnonyme({
                                          bg-white/80 backdrop-blur-sm text-blue-400
                                          px-2 py-0.5 rounded border border-blue-100"
                         >
-                          #{indexLabel}
+                          #{localIndexLabel}
                         </span>
                       </div>
 
