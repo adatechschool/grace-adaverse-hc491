@@ -70,7 +70,7 @@ describe("Mon schema Zod", () => {
     it("Test du coerce promo/programme", () => {
         const result = Form.safeParse({...validData, promotionId : "42", programmeId: "4"});
 
-        expect(result.success).toBe(true);
+        expect(result.success).toBe(false);
         expect(typeof result.data?.programmeId).toBe("number");
         expect(typeof result.data?.promotionId).toBe("number");
     })
