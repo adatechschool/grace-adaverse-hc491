@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { db } from "@/src";
 import ImageProjet from "../components/module/ImageProjet";
-import { projectsTable, promotionsTable, programmesTable, user } from "@/src/db/schema";
+import {
+  projectsTable,
+  promotionsTable,
+  programmesTable,
+  user,
+} from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 import { getGithubImage, getFallback } from "../components/module/getImages";
 import { auth } from "@/auth";
@@ -11,10 +16,12 @@ import { redirect } from "next/navigation";
 export default async function DetailsProject(props: {
   params: Promise<{ detailsProject: string }>;
 }) {
-
-  const session = await auth.api.getSession({headers: await headers()});
+  const session = await auth.api.getSession({ headers: await headers() });
   const userSession = session?.session.userId as string;
-  const banStatus = await db.select().from(user).where(eq(user.id, userSession));
+  const banStatus = await db
+    .select()
+    .from(user)
+    .where(eq(user.id, userSession));
   if (banStatus[0].banned) redirect("/banned");
 
   const { detailsProject } = await props.params;
@@ -32,11 +39,17 @@ export default async function DetailsProject(props: {
       programmeId: programmesTable.name,
     })
     .from(projectsTable)
-    .innerJoin(promotionsTable, eq(projectsTable.promotionId, promotionsTable.id))
-    .innerJoin(programmesTable, eq(projectsTable.programmeId, programmesTable.id))
+    .innerJoin(
+      promotionsTable,
+      eq(projectsTable.promotionId, promotionsTable.id),
+    )
+    .innerJoin(
+      programmesTable,
+      eq(projectsTable.programmeId, programmesTable.id),
+    )
     .where(eq(projectsTable.adresseweb, detailsProject));
   const project = result[0];
-  
+
   const fallback = getFallback(project.gitHubLink);
 
   if (!project) {
@@ -73,12 +86,11 @@ export default async function DetailsProject(props: {
       {/* Contenu */}
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
-
           {/* Image */}
           <div className="relative w-full h-64 bg-blue-50">
             <ImageProjet
               src={getGithubImage(project.gitHubLink) ?? fallback}
-              fallback = {fallback}
+              fallback={fallback}
               alt={project.title}
               className="w-full h-full object-cover"
             />
@@ -97,7 +109,9 @@ export default async function DetailsProject(props: {
               {project.publicationDate && (
                 <span className="text-xs font-mono text-slate-400 border border-slate-200 bg-slate-50 px-2 py-0.5 rounded">
                   Publié le{" "}
-                  {new Date(project.publicationDate).toLocaleDateString("fr-FR")}
+                  {new Date(project.publicationDate).toLocaleDateString(
+                    "fr-FR",
+                  )}
                 </span>
               )}
             </div>
@@ -109,23 +123,60 @@ export default async function DetailsProject(props: {
 
             {/* Boutons */}
             <div className="flex flex-wrap gap-3">
-              
-                <a href={project.gitHubLink}
+              <a
+                href={project.gitHubLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-slate-800 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-700 transition-colors duration-150"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors duration-150 text-blue-600 hover:text-blue-700 border border-blue-200 hover:border-blue-300 hover:bg-blue-50"
               >
-                <span>↗</span> Voir le GitHub
+                <span>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    className="size-5"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5"
+                    />
+                  </svg>
+                </span>{" "}
+                Voir le GitHub
               </a>
 
               {project.demoLink && (
-                
-                  <a href={project.demoLink}
+                <a
+                  href={project.demoLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 bg-blue-400 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-blue-500 transition-colors duration-150"
                 >
-                  <span>↗</span> Voir la démo
+                  <span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      className="size-5"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z"
+                      />
+                    </svg>
+                  </span>{" "}
+                  Voir la démo
                 </a>
               )}
             </div>

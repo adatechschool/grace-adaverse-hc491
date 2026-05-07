@@ -28,14 +28,18 @@ export default function HomePageAnonyme({
     useState(false);
   const [programmeFiltre, setProgrammeFiltre] = useState(programmes);
 
-  function handleChange(e: ChangeEvent<HTMLSelectElement, HTMLSelectElement>) {
-    const selectedId = e.target.value;
+  function handleChange(e: ChangeEvent<HTMLSelectElement>) {
+  const selectedId = e.target.value;
 
-    const programmesFiltre = programmes.filter(
-      (programme) => programme.id === Number(selectedId),
-    );
-    setProgrammeFiltre(programmesFiltre);
+  if (!selectedId) {
+    setProgrammeFiltre(programmes); // ← affiche tout si aucun filtre
+    return;
   }
+
+  setProgrammeFiltre(
+    programmes.filter((programme) => programme.id === Number(selectedId))
+  );
+}
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -73,16 +77,18 @@ export default function HomePageAnonyme({
 
       {/* Contenu principal */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div>
-          <select onChange={(e) => handleChange(e)}>
-            <option>Choisissez un projet</option>
-            {programmes.map((programme, index) => {
-              return (
-                <option key={index} value={programme.id}>
-                  {programme.name}
-                </option>
-              );
-            })}
+        {/* Filtre par programme */}
+        <div className="mb-10">
+          <select
+            onChange={(e) => handleChange(e)}
+            className="text-xs font-mono text-slate-600 border border-slate-200 bg-white px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer"
+          >
+            <option value="">Tous les programmes</option>
+            {programmes.map((programme) => (
+              <option key={programme.id} value={programme.id}>
+                {programme.name}
+              </option>
+            ))}
           </select>
         </div>
         {programmeFiltre.map((programme) => {
@@ -168,7 +174,20 @@ export default function HomePageAnonyme({
                                            group-hover:bg-blue-400 group-hover:text-white group-hover:border-blue-400
                                            transition-all duration-150"
                           >
-                            ↗
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              className="size-5"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
+                              />
+                            </svg>
                           </span>
                         </div>
                       </div>

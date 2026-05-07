@@ -16,20 +16,28 @@ type Props = {
   projects: Project[];
 };
 
-export default function HomePageClient({ programmes, promotions, projects }: Props) {
+export default function HomePageClient({
+  programmes,
+  promotions,
+  projects,
+}: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalSignOutOpen, setIsModalSignOutOpen] = useState(false);
 
   const [programmeFiltre, setProgrammeFiltre] = useState(programmes);
-  
-    function handleChange(e: ChangeEvent<HTMLSelectElement, HTMLSelectElement>) {
-      const selectedId = e.target.value;
-  
-      const programmesFiltre = programmes.filter(
-        (programme) => programme.id === Number(selectedId),
-      );
-      setProgrammeFiltre(programmesFiltre);
-    }
+
+ function handleChange(e: ChangeEvent<HTMLSelectElement>) {
+  const selectedId = e.target.value;
+
+  if (!selectedId) {
+    setProgrammeFiltre(programmes); // ← affiche tout si aucun filtre
+    return;
+  }
+
+  setProgrammeFiltre(
+    programmes.filter((programme) => programme.id === Number(selectedId))
+  );
+}
 
   const handleSubmit = async (data: {
     title: string;
@@ -40,7 +48,7 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
   }): Promise<boolean> => {
     return true;
   };
-  
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -76,22 +84,24 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
 
       {/* Contenu principal */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-               <div>
-          <select onChange={(e) => handleChange(e)}>
-            <option>Choisissez un projet</option>
-            {programmes.map((programme, index) => {
-              return (
-                <option key={index} value={programme.id}>
-                  {programme.name}
-                </option>
-              );
-            })}
+        {/* Filtre par programme */}
+        <div className="mb-10">
+          <select
+            onChange={(e) => handleChange(e)}
+            className="text-xs font-mono text-slate-600 border border-slate-200 bg-white px-4 py-2 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300 cursor-pointer"
+          >
+            <option value="">Tous les programmes</option>
+            {programmes.map((programme) => (
+              <option key={programme.id} value={programme.id}>
+                {programme.name}
+              </option>
+            ))}
           </select>
         </div>
         {programmeFiltre.map((programme) => {
           let localIndex = 0;
           const projectfilter = projects.filter(
-            (p) => p.programmeId === programme.id
+            (p) => p.programmeId === programme.id,
           );
 
           if (projectfilter.length === 0) return null;
@@ -115,7 +125,7 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
                 {projectfilter.map((project) => {
                   const fallback = getFallback(project.gitHubLink);
                   const promotionName = promotions.find(
-                    (p) => p.id === project.promotionId
+                    (p) => p.id === project.promotionId,
                   )?.name;
 
                   localIndex++;
@@ -133,14 +143,16 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
                       <div className="relative w-full h-44 bg-blue-50 overflow-hidden">
                         <ImageProjet
                           src={getGithubImage(project.gitHubLink) ?? fallback}
-                          fallback = {fallback}
+                          fallback={fallback}
                           alt={project.title}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                         {/* Numéro décoratif */}
-                        <span className="absolute top-3 left-3 font-mono text-xs font-medium
+                        <span
+                          className="absolute top-3 left-3 font-mono text-xs font-medium
                                          bg-white/80 backdrop-blur-sm text-blue-400
-                                         px-2 py-0.5 rounded border border-blue-100">
+                                         px-2 py-0.5 rounded border border-blue-100"
+                        >
                           #{localIndex}
                         </span>
                       </div>
@@ -150,8 +162,10 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
                         <p className="text-xs font-mono text-blue-400 uppercase tracking-widest mb-1.5">
                           {promotionName ?? "Promotion inconnue"}
                         </p>
-                        <h3 className="text-base font-bold text-slate-800 leading-snug
-                                        group-hover:text-blue-600 transition-colors duration-150">
+                        <h3
+                          className="text-base font-bold text-slate-800 leading-snug
+                                        group-hover:text-blue-600 transition-colors duration-150"
+                        >
                           {project.title}
                         </h3>
 
@@ -160,11 +174,26 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
                           <span className="text-xs text-slate-400 font-mono">
                             Voir le projet
                           </span>
-                          <span className="w-7 h-7 rounded-full border border-blue-200 bg-blue-50
+                          <span
+                            className="w-7 h-7 rounded-full border border-blue-200 bg-blue-50
                                            flex items-center justify-center text-blue-400 text-sm
                                            group-hover:bg-blue-400 group-hover:text-white group-hover:border-blue-400
-                                           transition-all duration-150">
-                            ↗
+                                           transition-all duration-150"
+                          >
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke-width="1.5"
+                              stroke="currentColor"
+                              className="size-5"
+                            >
+                              <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="m4.5 19.5 15-15m0 0H8.25m11.25 0v11.25"
+                              />
+                            </svg>
                           </span>
                         </div>
                       </div>
