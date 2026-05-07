@@ -40,6 +40,16 @@ export default async function DetailsProject(props: {
     }
   }
 
+  function getFallback(url : string) : string {
+    const parts = url.split("/");
+    const user = parts[3];
+    const repo = parts[4];
+
+    return `https://opengraph.githubassets.com/1/${user}/${repo}`
+  }
+
+  const fallback = getFallback(project.gitHubLink);
+
   if (!project) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center gap-4">
@@ -78,7 +88,8 @@ export default async function DetailsProject(props: {
           {/* Image */}
           <div className="relative w-full h-64 bg-blue-50">
             <ImageProjet
-              src={getGithubImage(project.gitHubLink) ?? ""}
+              src={getGithubImage(project.gitHubLink) ?? fallback}
+              fallback = {fallback}
               alt={project.title}
               className="w-full h-full object-cover"
             />

@@ -16,5 +16,4 @@ export async function isAdmin() {
       } else {
         return true
       }
-      
 }
