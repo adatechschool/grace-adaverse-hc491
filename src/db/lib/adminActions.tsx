@@ -33,4 +33,10 @@ export async function atomiser(id: number) {
 
 export async function bannir(id: string) {
   await db.update(user).set({banned : true}).where(eq(user.id, id));
+  refresh()
+}
+
+export async function debannir(id: string) {
+  await db.update(user).set({banned : false}).where(eq(user.id, id));
+  refresh()
 }
