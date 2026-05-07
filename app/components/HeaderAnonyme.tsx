@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface HeaderProps {
   openModalRegister: () => void;
   openModalSignIn: () => void;
@@ -14,6 +16,7 @@ export default function HeaderAnonyme({
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
           {/* Logo / marque */}
+          <Link href="/">
           <div className="flex items-center gap-2">
             <span className="w-7 h-7 rounded-md bg-blue-400 flex items-center justify-center">
               <svg
@@ -30,6 +33,7 @@ export default function HeaderAnonyme({
               Projets Ada
             </span>
           </div>
+          </Link>
 
           {/* Actions */}
           <div className="flex items-center gap-2">
