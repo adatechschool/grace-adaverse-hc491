@@ -2,9 +2,10 @@ import { auth } from "@/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/src";
-import { projectsTable, user } from "@/src/db/schema";
-import { eq, isNull } from "drizzle-orm";
+import { projectsTable, user, programmesTable, promotionsTable } from "@/src/db/schema";
+import { eq, isNull, and } from "drizzle-orm";
 import BouttonPublier from "../components/module/buttonPublier";
+import BouttonSupprimer from "../components/module/buttonSupprimer";
 import Link from "next/link";
 
 export default async function Admin() {
@@ -17,9 +18,21 @@ export default async function Admin() {
   }
 
   const projetsNonPublies = await db
-    .select()
-    .from(projectsTable)
-    .where(isNull(projectsTable.publicationDate));
+    .select({
+          id: projectsTable.id,
+          username: user.name,
+          title: projectsTable.title,
+          thumbnail: projectsTable.thumbnail,
+          gitHubLink: projectsTable.gitHubLink,
+          demoLink: projectsTable.demoLink,
+          promotionName: promotionsTable.name,
+          programmeName: programmesTable.name,
+        })
+        .from(projectsTable)
+        .innerJoin(promotionsTable, eq(projectsTable.promotionId, promotionsTable.id))
+        .innerJoin(programmesTable, eq(projectsTable.programmeId, programmesTable.id))
+        .innerJoin(user, eq(projectsTable.userId, user.id))
+        .where(and(eq(projectsTable.userId, user.id), isNull(projectsTable.publicationDate)));
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -65,7 +78,8 @@ export default async function Admin() {
 
             {/* Liste des projets */}
             <div className="flex flex-col gap-4">
-              {projetsNonPublies.map((project) => (
+              {projetsNonPublies.map((project) => {
+                return (
                 <div
                   key={project.id}
                   className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden
@@ -84,14 +98,20 @@ export default async function Admin() {
                     >
                       {project.gitHubLink}
                     </a>
+                    <span>{project.username}</span>
+                    <span>{project.programmeName}</span>
+                    <span>{project.promotionName}</span>
                   </div>
 
                   {/* Action */}
                   <div className="shrink-0">
                     <BouttonPublier project={project} />
                   </div>
+                  <div className="shrink-0">
+                    <BouttonSupprimer id={project.id} />
+                  </div>
                 </div>
-              ))}
+              )})}
             </div>
 
             {/* Retour */}

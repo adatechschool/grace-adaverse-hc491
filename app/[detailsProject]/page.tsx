@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { db } from "@/src";
-import ImageProjet from "../components/ImageProjet";
+import ImageProjet from "../components/module/ImageProjet";
 import { projectsTable, promotionsTable, programmesTable } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 import { getGithubImage, getFallback } from "../components/module/getImages";

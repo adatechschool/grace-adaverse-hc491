@@ -5,6 +5,9 @@ import { headers } from "next/headers";
 import { db } from "@/src";
 import { user } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
+import { ProjectProp } from "@/app/components/module/buttonPublier";
+import { projectsTable } from "@/src/db/schema";
+import { refresh } from "next/cache";
 
 export async function isAdmin() {
       const session = await auth.api.getSession({ headers: await headers() });
@@ -16,4 +19,14 @@ export async function isAdmin() {
       } else {
         return true
       }
+}
+
+export async function publier(project : ProjectProp) {
+  await db.update(projectsTable).set({publicationDate : new Date}).where(eq(projectsTable.id, project.id));
+  refresh();
+    }
+
+export async function atomiser(id: number) {
+  await db.delete(projectsTable).where(eq(projectsTable.id, id));
+  refresh();
 }

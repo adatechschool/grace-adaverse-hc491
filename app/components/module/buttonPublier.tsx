@@ -1,13 +1,23 @@
 'use client'
 
-import { Project } from "@/src/db/types"
-import { publier } from "@/src/db/lib/actions"
+import { publier } from "@/src/db/lib/adminActions"
 
-interface ProjectProp {
-  project: Project;
+export interface ProjectProp {
+    id: number,
+    username: string,
+    title: string,
+    thumbnail: string | null,
+    gitHubLink: string,
+    demoLink: string | null,
+    promotionName: string,
+    programmeName: string,
 }
 
-export default function BouttonPublier({ project }: ProjectProp) {
+type ProjectPubProp = {
+  project : ProjectProp
+}
+
+export default function BouttonPublier({ project }: ProjectPubProp) {
   return (
     <button
       onClick={() => publier(project)}

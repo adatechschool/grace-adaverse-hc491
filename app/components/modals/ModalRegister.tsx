@@ -1,4 +1,4 @@
-import Register from "./Register";
+import Register from "../module/Register";
 
 interface ModalProps {
   onClose: () => void;

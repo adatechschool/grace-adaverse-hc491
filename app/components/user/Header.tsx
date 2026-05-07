@@ -1,6 +1,6 @@
 "use client"
 
-import { isAdmin } from "../actions/adminActions";
+import { isAdmin } from "../../../src/db/lib/adminActions";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 

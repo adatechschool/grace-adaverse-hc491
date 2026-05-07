@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Header from "./Header";
-import Modal from "./Modal";
 import { Programme, Promotion, Project } from "@/src/db/types";
-import ImageProjet from "./ImageProjet";
-import ModalSignOut from "./ModalSignOut";
+import ImageProjet from "../module/ImageProjet";
+import ModalRegister from "../modals/ModalRegister";
+import ModalSignIn from "../modals/ModalSignIn";
+import ModalProjetConnexion from "../modals/ModalProjetConnexion";
+import HeaderAnonyme from "./HeaderAnonyme";
 import Link from "next/link";
-import { getGithubImage, getFallback } from "./module/getImages";
+import { getGithubImage, getFallback } from "../module/getImages";
 
 type Props = {
   programmes: Programme[];
@@ -15,38 +16,35 @@ type Props = {
   projects: Project[];
 };
 
-export default function HomePageClient({ programmes, promotions, projects }: Props) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalSignOutOpen, setIsModalSignOutOpen] = useState(false);
+export default function HomePageAnonyme({
+  programmes,
+  promotions,
+  projects,
+}: Props) {
+  const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
+  const [isModalSignInOpen, setIsModalSignInOpen] = useState(false);
+  const [isModalProjetConnexionOpen, setIsModalProjetConnexionOpen] =
+    useState(false);
 
-  const handleSubmit = async (data: {
-    title: string;
-    gitHubLink: string;
-    demoLink?: string;
-    promoAda: string;
-    projetAda: string;
-  }): Promise<boolean> => {
-    return true;
-  };
-  
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
-      <Header
-        openModal={() => setIsModalOpen(true)}
-        openModalSignOut={() => setIsModalSignOutOpen(true)}
+      <HeaderAnonyme
+        openModalRegister={() => setIsModalRegisterOpen(true)}
+        openModalSignIn={() => setIsModalSignInOpen(true)}
+        openModalProjetConnexion={() => setIsModalProjetConnexionOpen(true)}
       />
 
       {/* Modals */}
-      {isModalSignOutOpen && (
-        <ModalSignOut onClose={() => setIsModalSignOutOpen(false)} />
+      {isModalRegisterOpen && (
+        <ModalRegister onClose={() => setIsModalRegisterOpen(false)} />
       )}
-      {isModalOpen && (
-        <Modal
-          programme={programmes}
-          promotion={promotions}
-          onClose={() => setIsModalOpen(false)}
-          onSubmit={handleSubmit}
+      {isModalSignInOpen && (
+        <ModalSignIn onClose={() => setIsModalSignInOpen(false)} />
+      )}
+      {isModalProjetConnexionOpen && (
+        <ModalProjetConnexion
+          onClose={() => setIsModalProjetConnexionOpen(false)}
         />
       )}
 
@@ -67,7 +65,7 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
         {programmes.map((programme) => {
           let localIndex = 0;
           const projectfilter = projects.filter(
-            (p) => p.programmeId === programme.id
+            (p) => p.programmeId === programme.id,
           );
 
           if (projectfilter.length === 0) return null;
@@ -89,12 +87,13 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
               {/* Grille des projets */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {projectfilter.map((project) => {
-                  const fallback = getFallback(project.gitHubLink);
                   const promotionName = promotions.find(
-                    (p) => p.id === project.promotionId
+                    (p) => p.id === project.promotionId,
                   )?.name;
 
                   localIndex++;
+                  const localIndexLabel = String(localIndex);
+                  const fallback = getFallback(project.gitHubLink);
 
                   return (
                     <Link
@@ -108,16 +107,18 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
                       {/* Image */}
                       <div className="relative w-full h-44 bg-blue-50 overflow-hidden">
                         <ImageProjet
-                          src={getGithubImage(project.gitHubLink) ?? fallback}
-                          fallback = {fallback}
-                          alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
+                                                  src={getGithubImage(project.gitHubLink) ?? fallback}
+                                                  fallback = {fallback}
+                                                  alt={project.title}
+                                                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                />
                         {/* Numéro décoratif */}
-                        <span className="absolute top-3 left-3 font-mono text-xs font-medium
+                        <span
+                          className="absolute top-3 left-3 font-mono text-xs font-medium
                                          bg-white/80 backdrop-blur-sm text-blue-400
-                                         px-2 py-0.5 rounded border border-blue-100">
-                          #{localIndex}
+                                         px-2 py-0.5 rounded border border-blue-100"
+                        >
+                          #{localIndexLabel}
                         </span>
                       </div>
 
@@ -126,8 +127,10 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
                         <p className="text-xs font-mono text-blue-400 uppercase tracking-widest mb-1.5">
                           {promotionName ?? "Promotion inconnue"}
                         </p>
-                        <h3 className="text-base font-bold text-slate-800 leading-snug
-                                        group-hover:text-blue-600 transition-colors duration-150">
+                        <h3
+                          className="text-base font-bold text-slate-800 leading-snug
+                                        group-hover:text-blue-600 transition-colors duration-150"
+                        >
                           {project.title}
                         </h3>
 
@@ -136,10 +139,12 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
                           <span className="text-xs text-slate-400 font-mono">
                             Voir le projet
                           </span>
-                          <span className="w-7 h-7 rounded-full border border-blue-200 bg-blue-50
+                          <span
+                            className="w-7 h-7 rounded-full border border-blue-200 bg-blue-50
                                            flex items-center justify-center text-blue-400 text-sm
                                            group-hover:bg-blue-400 group-hover:text-white group-hover:border-blue-400
-                                           transition-all duration-150">
+                                           transition-all duration-150"
+                          >
                             ↗
                           </span>
                         </div>

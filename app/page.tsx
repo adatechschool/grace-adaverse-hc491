@@ -1,11 +1,11 @@
 
-import HomePageClient from "./components/HomePageClient";
+import HomePageClient from "./components/user/HomePageClient";
 import { db } from "@/src";
 import { programmesTable, projectsTable, promotionsTable } from "@/src/db/schema";
 import { desc, isNotNull } from "drizzle-orm";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
-import HomePageAnonyme from "./components/HomePageAnonyme";
+import HomePageAnonyme from "./components/anonyme/HomePageAnonyme";
 
 export default async function Home() {
   const programmes = await db.select().from(programmesTable);

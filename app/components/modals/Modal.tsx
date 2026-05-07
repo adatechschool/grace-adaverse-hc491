@@ -1,10 +1,24 @@
-import SignIn from "./SignIn";
+"use client";
 
-interface ModalProps {
+import { Programme, Promotion } from "@/src/db/types";
+import Formulaire from "../module/Formulaire";
+
+type SubmitData = {
+  title: string;
+  gitHubLink: string;
+  demoLink?: string;
+  promoAda: string;
+  projetAda: string;
+};
+
+type Props = {
+  programme: Programme[];
+  promotion: Promotion[];
   onClose: () => void;
-}
+  onSubmit: (data: SubmitData) => Promise<boolean>;
+};
 
-export default function ModalSignIn({ onClose }: ModalProps) {
+export default function Modal({ programme, promotion, onClose, onSubmit }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Backdrop */}
@@ -20,16 +34,21 @@ export default function ModalSignIn({ onClose }: ModalProps) {
           {/* Header */}
           <div className="bg-blue-400 px-6 py-5">
             <p className="text-blue-900 text-xs font-mono tracking-widest uppercase mb-1">
-              Bon retour
+              Nouvelle soumission
             </p>
             <h2 className="text-white text-2xl font-bold leading-tight">
-              Me connecter
+              Proposer un projet
             </h2>
           </div>
 
-          {/* Contenu */}
+          {/* Formulaire */}
           <div className="p-6">
-            <SignIn closeModal={onClose} />
+            <Formulaire
+              closeModal={onClose}
+              onSubmit={onSubmit}
+              programmes={programme}
+              promotions={promotion}
+            />
           </div>
 
         </div>
