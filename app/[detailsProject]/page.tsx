@@ -1,13 +1,22 @@
 import Link from "next/link";
 import { db } from "@/src";
 import ImageProjet from "../components/module/ImageProjet";
-import { projectsTable, promotionsTable, programmesTable } from "@/src/db/schema";
+import { projectsTable, promotionsTable, programmesTable, user } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 import { getGithubImage, getFallback } from "../components/module/getImages";
+import { auth } from "@/auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 export default async function DetailsProject(props: {
   params: Promise<{ detailsProject: string }>;
 }) {
+
+  const session = await auth.api.getSession({headers: await headers()});
+  const userSession = session?.session.userId as string;
+  const banStatus = await db.select().from(user).where(eq(user.id, userSession));
+  if (banStatus[0].banned) redirect("/banned");
+
   const { detailsProject } = await props.params;
 
   const result = await db
@@ -26,10 +35,8 @@ export default async function DetailsProject(props: {
     .innerJoin(promotionsTable, eq(projectsTable.promotionId, promotionsTable.id))
     .innerJoin(programmesTable, eq(projectsTable.programmeId, programmesTable.id))
     .where(eq(projectsTable.adresseweb, detailsProject));
-
   const project = result[0];
-
-
+  
   const fallback = getFallback(project.gitHubLink);
 
   if (!project) {

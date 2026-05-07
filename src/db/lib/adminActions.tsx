@@ -30,3 +30,7 @@ export async function atomiser(id: number) {
   await db.delete(projectsTable).where(eq(projectsTable.id, id));
   refresh();
 }
+
+export async function bannir(id: string) {
+  await db.update(user).set({banned : true}).where(eq(user.id, id));
+}

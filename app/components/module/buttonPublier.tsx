@@ -5,6 +5,7 @@ import { publier } from "@/src/db/lib/adminActions"
 export interface ProjectProp {
     id: number,
     username: string,
+    userId: string,
     title: string,
     thumbnail: string | null,
     gitHubLink: string,

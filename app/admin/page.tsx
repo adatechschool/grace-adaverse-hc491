@@ -6,6 +6,7 @@ import { projectsTable, user, programmesTable, promotionsTable } from "@/src/db/
 import { eq, isNull, and } from "drizzle-orm";
 import BouttonPublier from "../components/module/buttonPublier";
 import BouttonSupprimer from "../components/module/buttonSupprimer";
+import BouttonBannir from "../components/module/buttonBannir";
 import Link from "next/link";
 
 export default async function Admin() {
@@ -21,6 +22,7 @@ export default async function Admin() {
     .select({
           id: projectsTable.id,
           username: user.name,
+          userId: user.id,
           title: projectsTable.title,
           thumbnail: projectsTable.thumbnail,
           gitHubLink: projectsTable.gitHubLink,
@@ -109,6 +111,9 @@ export default async function Admin() {
                   </div>
                   <div className="shrink-0">
                     <BouttonSupprimer id={project.id} />
+                  </div>
+                  <div className="shrink-0">
+                    <BouttonBannir userId={project.userId} />
                   </div>
                 </div>
               )})}
