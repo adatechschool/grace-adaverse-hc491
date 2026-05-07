@@ -22,3 +22,15 @@ export type Project = {
   programmeId: number;
   userId: string | null;
 }
+
+export type User = {
+  id: string,
+    name: string,
+    admin : boolean,
+    email: string,
+    emailVerified: boolean,
+    image: string,
+    banned: boolean,
+    createdAt: Date,
+    updatedAt: Date
+}

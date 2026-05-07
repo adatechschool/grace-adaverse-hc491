@@ -8,6 +8,7 @@ import BouttonPublier from "../components/module/buttonPublier";
 import BouttonSupprimer from "../components/module/buttonSupprimer";
 import BouttonBannir from "../components/module/buttonBannir";
 import Link from "next/link";
+import BanUsers from "../components/banUsers";
 
 export default async function Admin() {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -35,6 +36,10 @@ export default async function Admin() {
         .innerJoin(programmesTable, eq(projectsTable.programmeId, programmesTable.id))
         .innerJoin(user, eq(projectsTable.userId, user.id))
         .where(and(eq(projectsTable.userId, user.id), isNull(projectsTable.publicationDate)));
+
+  const users = await db.select().from(user);
+  const usersPasBannis = users.filter((user) => !user.banned);
+  const usersBannis = users.filter((user) => user.banned);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -118,7 +123,15 @@ export default async function Admin() {
                 </div>
               )})}
             </div>
-
+          </>
+        )}
+        
+            <div>
+              <BanUsers 
+                usersBannis = {usersBannis}
+                usersPasBannis = {usersPasBannis}
+                />
+            </div>
             {/* Retour */}
             <div className="mt-10">
               <Link
@@ -128,8 +141,6 @@ export default async function Admin() {
                 ← Retour à l'accueil
               </Link>
             </div>
-          </>
-        )}
       </main>
     </div>
   );

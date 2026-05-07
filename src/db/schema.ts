@@ -72,7 +72,6 @@ export const user = pgTable("user", {
   admin : boolean("admin").notNull().default(false),
   email: text("email").notNull().unique(),
   emailVerified: boolean("email_verified").default(false).notNull(),
-  image: text("image"),
   banned: boolean("banni").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
