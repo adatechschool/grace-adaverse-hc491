@@ -8,6 +8,7 @@ import ImageProjet from "../module/ImageProjet";
 import ModalSignOut from "../modals/ModalSignOut";
 import Link from "next/link";
 import { getGithubImage, getFallback } from "../module/getImages";
+import { ChangeEvent } from "react";
 
 type Props = {
   programmes: Programme[];
@@ -18,6 +19,17 @@ type Props = {
 export default function HomePageClient({ programmes, promotions, projects }: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalSignOutOpen, setIsModalSignOutOpen] = useState(false);
+
+  const [programmeFiltre, setProgrammeFiltre] = useState(programmes);
+  
+    function handleChange(e: ChangeEvent<HTMLSelectElement, HTMLSelectElement>) {
+      const selectedId = e.target.value;
+  
+      const programmesFiltre = programmes.filter(
+        (programme) => programme.id === Number(selectedId),
+      );
+      setProgrammeFiltre(programmesFiltre);
+    }
 
   const handleSubmit = async (data: {
     title: string;
@@ -64,7 +76,19 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
 
       {/* Contenu principal */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {programmes.map((programme) => {
+               <div>
+          <select onChange={(e) => handleChange(e)}>
+            <option>Choisissez un projet</option>
+            {programmes.map((programme, index) => {
+              return (
+                <option key={index} value={programme.id}>
+                  {programme.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        {programmeFiltre.map((programme) => {
           let localIndex = 0;
           const projectfilter = projects.filter(
             (p) => p.programmeId === programme.id
