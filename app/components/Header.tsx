@@ -1,9 +1,23 @@
+"use client"
+
+import { isAdmin } from "../actions/adminActions";
+import Link from "next/link";
+import { useState, useEffect } from "react";
+
 interface HeaderProps {
   openModal: () => void;
   openModalSignOut: () => void;
 }
 
+
+
 export default function Header({ openModal, openModalSignOut }: HeaderProps) {
+  const [admin, setAdmin] = useState(false)
+
+  useEffect(() => {
+    isAdmin().then(setAdmin);
+  }, []);
+  
   return (
     <header className="bg-white border-b border-blue-100">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,6 +42,9 @@ export default function Header({ openModal, openModalSignOut }: HeaderProps) {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
+            {admin && (
+              <Link href="/admin">Admin</Link>
+            )}
             {/* Proposer un projet — bouton principal */}
             <button
               onClick={openModal}
