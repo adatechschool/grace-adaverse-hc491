@@ -9,6 +9,8 @@ import ModalProjetConnexion from "../modals/ModalProjetConnexion";
 import HeaderAnonyme from "./HeaderAnonyme";
 import Link from "next/link";
 import { getGithubImage, getFallback } from "../module/getImages";
+import Filter from "../filter";
+import { ChangeEvent } from "react";
 
 type Props = {
   programmes: Programme[];
@@ -25,6 +27,17 @@ export default function HomePageAnonyme({
   const [isModalSignInOpen, setIsModalSignInOpen] = useState(false);
   const [isModalProjetConnexionOpen, setIsModalProjetConnexionOpen] =
     useState(false);
+  const [programmeIdFiltre, setProgrammeIdFiltre] = useState("");
+  const [programmeFiltre, setProgrammeFiltre] = useState(programmes);
+
+  function handleChange(e: ChangeEvent<HTMLSelectElement, HTMLSelectElement>) {
+    setProgrammeIdFiltre(e.target.value);
+
+    const programmesFiltre = programmes.filter(
+      (programme) => programme.id === Number(programmeIdFiltre),
+    );
+    setProgrammeFiltre(programmesFiltre);
+  }
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -62,7 +75,19 @@ export default function HomePageAnonyme({
 
       {/* Contenu principal */}
       <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {programmes.map((programme) => {
+        <div>
+          <select onChange={(e) => handleChange(e)}>
+            <option>Choisissez un projet</option>
+            {programmes.map((programme, index) => {
+              return (
+                <option key={index} value={programme.id}>
+                  {programme.name}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        {programmeFiltre.map((programme) => {
           let localIndex = 0;
           const projectfilter = projects.filter(
             (p) => p.programmeId === programme.id,
@@ -107,11 +132,11 @@ export default function HomePageAnonyme({
                       {/* Image */}
                       <div className="relative w-full h-44 bg-blue-50 overflow-hidden">
                         <ImageProjet
-                                                  src={getGithubImage(project.gitHubLink) ?? fallback}
-                                                  fallback = {fallback}
-                                                  alt={project.title}
-                                                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                                />
+                          src={getGithubImage(project.gitHubLink) ?? fallback}
+                          fallback={fallback}
+                          alt={project.title}
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
                         {/* Numéro décoratif */}
                         <span
                           className="absolute top-3 left-3 font-mono text-xs font-medium
