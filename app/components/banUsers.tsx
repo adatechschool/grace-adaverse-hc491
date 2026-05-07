@@ -31,9 +31,9 @@ export default function BanUsers({usersBannis, usersPasBannis} : UserProps) {
     <div>
         <h2>Utilisateurs bannis</h2>
             <div>
-                {usersBannis.map((user) => {
+                {usersBannis.map((user, index) => {
                     return (
-                        <div>
+                        <div key={index}>
                             <span>{user.name}</span>
                             <button>Débannir</button>
                         </div>
