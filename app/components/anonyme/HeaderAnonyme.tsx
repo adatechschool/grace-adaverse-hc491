@@ -17,22 +17,27 @@ export default function HeaderAnonyme({
         <div className="flex items-center justify-between h-14">
           {/* Logo / marque */}
           <Link href="/">
-          <div className="flex items-center gap-2">
-            <span className="w-7 h-7 rounded-md bg-blue-400 flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="w-4 h-4 text-white"
-              >
-                <path d="M11.7 2.805a.75.75 0 0 1 .6 0A60.65 60.65 0 0 1 22.83 8.72a.75.75 0 0 1-.231 1.337A49.95 49.95 0 0 0 12 10.333a49.95 49.95 0 0 0-10.6-2.276.75.75 0 0 1-.23-1.337A60.65 60.65 0 0 1 11.7 2.805Z" />
-                <path d="M13.06 15.473a48.45 48.45 0 0 1 7.666-3.282c.134.769.217 1.554.247 2.354a.75.75 0 0 1-.497.736 48.53 48.53 0 0 0-8.26 3.84.75.75 0 0 1-.771 0 48.53 48.53 0 0 0-8.26-3.84.75.75 0 0 1-.497-.736c.03-.8.113-1.585.247-2.354A48.45 48.45 0 0 1 10.94 15.473a2.25 2.25 0 0 0 2.12 0Z" />
-              </svg>
-            </span>
-            <span className="text-sm font-bold text-slate-800 tracking-tight font-mono">
-              Projets Ada
-            </span>
-          </div>
+            <div className="flex items-center gap-2">
+              <span className="w-7 h-7 rounded-md bg-blue-400 flex items-center justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  className="size-5"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"
+                  />
+                </svg>
+              </span>
+              <span className="text-sm font-bold text-slate-800 tracking-tight font-mono">
+                Projets Ada
+              </span>
+            </div>
           </Link>
 
           {/* Actions */}
