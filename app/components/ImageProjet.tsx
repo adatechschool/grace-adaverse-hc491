@@ -16,11 +16,10 @@ export default function ImageProjet({ src, alt, className, fallback }: Props) {
 
   useEffect(() => {
     const img = new Image();
-    img.onload = () => setImgSrc(src);
-    img.onerror = () => {
-      // fallback aussi cassé ? → image locale
+    img.onload = () => setImgSrc(src); // test de la miniature
+    img.onerror = () => { 
       const fallbackImg = new Image();
-      fallbackImg.onload = () => setImgSrc(fallback);
+      fallbackImg.onload = () => setImgSrc(fallback); // test du fallback
       fallbackImg.onerror = () => setImgSrc(DEFAULT_IMAGE);
       fallbackImg.src = fallback;
     };

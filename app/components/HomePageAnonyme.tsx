@@ -8,6 +8,7 @@ import ModalSignIn from "./ModalSignIn";
 import ModalProjetConnexion from "./ModalProjetConnexion";
 import HeaderAnonyme from "./HeaderAnonyme";
 import Link from "next/link";
+import { getGithubImage, getFallback } from "./module/getImages";
 
 type Props = {
   programmes: Programme[];
@@ -24,22 +25,6 @@ export default function HomePageAnonyme({
   const [isModalSignInOpen, setIsModalSignInOpen] = useState(false);
   const [isModalProjetConnexionOpen, setIsModalProjetConnexionOpen] =
     useState(false);
-
-function getGithubImage(url: string): string | null {
-  const parts = url.split("/");
-  const user = parts[3];
-  const repo = parts[4];
-  if (!user || !repo) return null;
-  return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
-}
-
-  function getFallback(url : string) : string {
-    const parts = url.split("/");
-    const user = parts[3];
-    const repo = parts[4];
-
-    return `https://opengraph.githubassets.com/1/${user}/${repo}`
-  }
 
   return (
     <div className="min-h-screen bg-slate-50">

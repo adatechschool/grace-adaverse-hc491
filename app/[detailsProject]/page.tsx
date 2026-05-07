@@ -3,6 +3,7 @@ import { db } from "@/src";
 import ImageProjet from "../components/ImageProjet";
 import { projectsTable, promotionsTable, programmesTable } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
+import { getGithubImage, getFallback } from "../components/module/getImages";
 
 export default async function DetailsProject(props: {
   params: Promise<{ detailsProject: string }>;
@@ -28,25 +29,6 @@ export default async function DetailsProject(props: {
 
   const project = result[0];
 
-  function getGithubImage(url: string): string | null {
-    try {
-      const parts = url.split("/");
-      const user = parts[3];
-      const repo = parts[4];
-      if (!user || !repo) return null;
-      return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
-    } catch {
-      return null;
-    }
-  }
-
-  function getFallback(url : string) : string {
-    const parts = url.split("/");
-    const user = parts[3];
-    const repo = parts[4];
-
-    return `https://opengraph.githubassets.com/1/${user}/${repo}`
-  }
 
   const fallback = getFallback(project.gitHubLink);
 

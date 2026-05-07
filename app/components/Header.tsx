@@ -9,9 +9,9 @@ interface HeaderProps {
   openModalSignOut: () => void;
 }
 
-
-
 export default function Header({ openModal, openModalSignOut }: HeaderProps) {
+  
+  // On vérifie si l'utilisateur est un admin
   const [admin, setAdmin] = useState(false)
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import type { Programme, Promotion } from "@/src/db/types";
 import { addProject } from "@/src/db/lib/actions";
 
@@ -28,15 +28,9 @@ const labelClass =
 
 export default function Formulaire({
   closeModal,
-  onSubmit,
   programmes,
   promotions,
 }: FormulaireProps) {
-  const [title, setTitle] = useState("");
-  const [gitHubLink, setGitHubLink] = useState("");
-  const [demoLink, setDemoLink] = useState("");
-  const [promoAda, setPromoAda] = useState("");
-  const [projetAda, setProjetAda] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   return (
@@ -92,8 +86,6 @@ export default function Formulaire({
           <input
             name="title"
             type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
             className={inputClass}
             placeholder="Ex : Plateforme collaborative temps réel"
             required
@@ -107,8 +99,6 @@ export default function Formulaire({
             <input
               name="gitHubLink"
               type="url"
-              value={gitHubLink}
-              onChange={(e) => setGitHubLink(e.target.value)}
               className={inputClass}
               placeholder="https://github.com/…"
               required
@@ -124,8 +114,6 @@ export default function Formulaire({
             <input
               name="demoLink"
               type="url"
-              value={demoLink}
-              onChange={(e) => setDemoLink(e.target.value)}
               className={inputClass}
               placeholder="https://…"
             />
@@ -138,8 +126,6 @@ export default function Formulaire({
           <div className="relative">
             <select
               name="promotionId"
-              value={promoAda}
-              onChange={(e) => setPromoAda(e.target.value)}
               className={inputClass + " appearance-none pr-8"}
               required
             >
@@ -170,8 +156,6 @@ export default function Formulaire({
           <div className="relative">
             <select
               name="programmeId"
-              value={projetAda}
-              onChange={(e) => setProjetAda(e.target.value)}
               className={inputClass + " appearance-none pr-8"}
               required
             >
