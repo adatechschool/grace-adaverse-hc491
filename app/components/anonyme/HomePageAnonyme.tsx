@@ -9,7 +9,6 @@ import ModalProjetConnexion from "../modals/ModalProjetConnexion";
 import HeaderAnonyme from "./HeaderAnonyme";
 import Link from "next/link";
 import { getGithubImage, getFallback } from "../module/getImages";
-import Filter from "../filter";
 import { ChangeEvent } from "react";
 
 type Props = {
@@ -27,14 +26,13 @@ export default function HomePageAnonyme({
   const [isModalSignInOpen, setIsModalSignInOpen] = useState(false);
   const [isModalProjetConnexionOpen, setIsModalProjetConnexionOpen] =
     useState(false);
-  const [programmeIdFiltre, setProgrammeIdFiltre] = useState("");
   const [programmeFiltre, setProgrammeFiltre] = useState(programmes);
 
   function handleChange(e: ChangeEvent<HTMLSelectElement, HTMLSelectElement>) {
-    setProgrammeIdFiltre(e.target.value);
+    const selectedId = e.target.value;
 
     const programmesFiltre = programmes.filter(
-      (programme) => programme.id === Number(programmeIdFiltre),
+      (programme) => programme.id === Number(selectedId),
     );
     setProgrammeFiltre(programmesFiltre);
   }
