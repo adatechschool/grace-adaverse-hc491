@@ -43,8 +43,6 @@ function getGithubImage(url: string): string | null {
 
     return `https://opengraph.githubassets.com/1/${user}/${repo}`
   }
-
-  
   
   return (
     <div className="min-h-screen bg-slate-50">
