@@ -25,12 +25,20 @@ export default function HomePageAnonyme({
   const [isModalProjetConnexionOpen, setIsModalProjetConnexionOpen] =
     useState(false);
 
-  function getGithubImage(url: string): string | null {
+function getGithubImage(url: string): string | null {
+  const parts = url.split("/");
+  const user = parts[3];
+  const repo = parts[4];
+  if (!user || !repo) return null;
+  return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
+}
+
+  function getFallback(url : string) : string {
     const parts = url.split("/");
     const user = parts[3];
     const repo = parts[4];
-    if (!user || !repo) return null;
-    return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
+
+    return `https://opengraph.githubassets.com/1/${user}/${repo}`
   }
 
   return (
@@ -100,6 +108,7 @@ export default function HomePageAnonyme({
 
                   localIndex++;
                   const localIndexLabel = String(localIndex);
+                  const fallback = getFallback(project.gitHubLink);
 
                   return (
                     <Link
@@ -113,13 +122,11 @@ export default function HomePageAnonyme({
                       {/* Image */}
                       <div className="relative w-full h-44 bg-blue-50 overflow-hidden">
                         <ImageProjet
-                          src={
-                            getGithubImage(project.gitHubLink) ??
-                            "/placeholder-project.png"
-                          }
-                          alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        />
+                                                  src={getGithubImage(project.gitHubLink) ?? fallback}
+                                                  fallback = {fallback}
+                                                  alt={project.title}
+                                                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                                />
                         {/* Numéro décoratif */}
                         <span
                           className="absolute top-3 left-3 font-mono text-xs font-medium

@@ -28,14 +28,22 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
     return true;
   };
 
-  function getGithubImage(url: string): string | null {
+function getGithubImage(url: string): string | null {
+  const parts = url.split("/");
+  const user = parts[3];
+  const repo = parts[4];
+  if (!user || !repo) return null;
+  return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
+}
+
+  function getFallback(url : string) : string {
     const parts = url.split("/");
     const user = parts[3];
     const repo = parts[4];
-    if (!user || !repo) return null;
-    return `https://raw.githubusercontent.com/${user}/${repo}/main/thumbnail.png`;
-  }
 
+    return `https://opengraph.githubassets.com/1/${user}/${repo}`
+  }
+  
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -96,6 +104,7 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
               {/* Grille des projets */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {projectfilter.map((project) => {
+                  const fallback = getFallback(project.gitHubLink);
                   const promotionName = promotions.find(
                     (p) => p.id === project.promotionId
                   )?.name;
@@ -114,7 +123,8 @@ export default function HomePageClient({ programmes, promotions, projects }: Pro
                       {/* Image */}
                       <div className="relative w-full h-44 bg-blue-50 overflow-hidden">
                         <ImageProjet
-                          src={getGithubImage(project.gitHubLink) ?? ""}
+                          src={getGithubImage(project.gitHubLink) ?? fallback}
+                          fallback = {fallback}
                           alt={project.title}
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
