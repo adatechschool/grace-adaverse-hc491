@@ -20,6 +20,7 @@ export default async function Home() {
   const session = await auth.api.getSession({headers: await headers()});
   const userSession = session?.session.userId as string;
   const banStatus = await db.select().from(user).where(eq(user.id, userSession));
+  
   if (banStatus[0]?.banned) redirect("/banned");
 
  

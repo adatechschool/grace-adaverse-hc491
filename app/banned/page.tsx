@@ -4,13 +4,15 @@ import { db } from "@/src";
 import { user } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
+import SignOut from "./SignOut";
+
 
 const session = await auth.api.getSession({ headers: await headers() });
 const userSession = session?.session.userId as string;
 const banStatus = await db.select().from(user).where(eq(user.id, userSession));
 
 export default function Banned() {
-  if (!session?.user || !banStatus[0].banned) redirect("/");
+  if (!session?.user || banStatus[0].banned === false) redirect("/");
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4">
@@ -47,27 +49,7 @@ export default function Banned() {
         <div className="h-px bg-slate-100 my-6" />
 
         {/* Retour */}
-        <a
-          href="/"
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-400
-                     hover:text-blue-500 transition-colors duration-150"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={2}
-            stroke="currentColor"
-            className="w-4 h-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
-            />
-          </svg>
-          Se déconnecter
-        </a>
+        <SignOut />
       </div>
     </div>
   );
