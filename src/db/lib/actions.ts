@@ -28,7 +28,6 @@ export async function addProject(formData: FormData) {
   const adresseLink = (promoNameClear + "-" + projetNameClear + "-" + title).toLowerCase();
   
   const dataToValidate = Object.fromEntries(formData.entries());
-  // const dataToValidate = {...dataFromForm, title : (formData.get("title") as string).trim()}
   const result = Form.safeParse(dataToValidate);
 
   const session = await auth.api.getSession({headers: await headers()});

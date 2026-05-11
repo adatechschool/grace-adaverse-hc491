@@ -29,16 +29,16 @@ export default function HomePageAnonyme({
   const [programmeFiltre, setProgrammeFiltre] = useState(programmes);
 
   function handleChange(e: ChangeEvent<HTMLSelectElement>) {
-  const selectedId = e.target.value;
+    const selectedId = e.target.value;
 
-  if (!selectedId) {
-    setProgrammeFiltre(programmes); // ← affiche tout si aucun filtre
-    return;
-  }
+    if (!selectedId) {
+      setProgrammeFiltre(programmes); 
+      return;
+    }
 
-  setProgrammeFiltre(
-    programmes.filter((programme) => programme.id === Number(selectedId))
-  );
+    setProgrammeFiltre(
+      programmes.filter((programme) => programme.id === Number(selectedId))
+    );
 }
 
   return (
