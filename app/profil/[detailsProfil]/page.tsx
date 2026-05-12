@@ -8,7 +8,7 @@ import Link from "next/link";
 import ImageProjet from "@/app/components/module/ImageProjet";
 import { getGithubImage,getFallback } from "@/app/components/module/getImages";
 
-export default async function DetailsProfil(props: {
+export default async function detailsProfil(props: {
   params: Promise<{ detailsProfil: string }>;
 }) {
   const session = await auth.api.getSession({ headers: await headers() });
@@ -17,7 +17,9 @@ export default async function DetailsProfil(props: {
   const banStatus = await db.select().from(user).where(eq(user.id, userSession));
   if (banStatus[0]?.banned) redirect("/banned");
 
-  const { detailsProfil } = await props.params;
+const { detailsProfil: rawParam } = await props.params;
+const detailsProfil = decodeURIComponent(rawParam);
+
 
   // On cherche l'utilisateur par son nom (l'URL)
   const userResult = await db
