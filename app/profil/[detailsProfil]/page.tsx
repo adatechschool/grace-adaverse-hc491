@@ -7,6 +7,8 @@ import { eq } from "drizzle-orm";
 import Link from "next/link";
 import ImageProjet from "@/app/components/module/ImageProjet";
 import { getGithubImage,getFallback } from "@/app/components/module/getImages";
+import BouttonSupprimer from "@/app/components/module/buttonSupprimer";
+import ModalDeleteProject from "@/app/components/modals/ModalDeleteProject";
 
 export default async function detailsProfil(props: {
   params: Promise<{ detailsProfil: string }>;
@@ -103,6 +105,7 @@ const detailsProfil = decodeURIComponent(rawParam);
             {projets.map((project) => {
               const fallback = getFallback(project.gitHubLink);
               return (
+                <div>
                 <Link
                   key={project.id}
                   href={`/${project.adresseweb}`}
@@ -150,7 +153,13 @@ const detailsProfil = decodeURIComponent(rawParam);
                     </div>
                   </div>
                 </Link>
+              
+                                        <div className="flex items-center gap-2 shrink-0">
+                                        <BouttonSupprimer id={project.id} />
+                                      </div>
+                                      </div>
               );
+
             })}
           </div>
         )}

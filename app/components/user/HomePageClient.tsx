@@ -24,6 +24,7 @@ export default function HomePageClient({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalSignOutOpen, setIsModalSignOutOpen] = useState(false);
 
+
   const [programmeFiltre, setProgrammeFiltre] = useState(programmes);
 
  function handleChange(e: ChangeEvent<HTMLSelectElement>) {
