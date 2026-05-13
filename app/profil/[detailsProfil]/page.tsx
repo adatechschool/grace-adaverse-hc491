@@ -2,13 +2,19 @@ import { headers } from "next/headers";
 import { db } from "@/src";
 import { redirect, notFound } from "next/navigation";
 import { auth } from "@/auth";
-import { projectsTable, user, promotionsTable, programmesTable } from "@/src/db/schema";
+import {
+  projectsTable,
+  user,
+  promotionsTable,
+  programmesTable,
+} from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 import Link from "next/link";
 import ImageProjet from "@/app/components/module/ImageProjet";
-import { getGithubImage,getFallback } from "@/app/components/module/getImages";
+import { getGithubImage, getFallback } from "@/app/components/module/getImages";
 import BouttonSupprimer from "@/app/components/module/buttonSupprimer";
 import ModalDeleteProject from "@/app/components/modals/ModalDeleteProject";
+import BoutonModifier from "@/app/components/module/buttonModifier";
 
 export default async function detailsProfil(props: {
   params: Promise<{ detailsProfil: string }>;
@@ -16,12 +22,14 @@ export default async function detailsProfil(props: {
   const session = await auth.api.getSession({ headers: await headers() });
   const userSession = session?.session.userId as string;
 
-  const banStatus = await db.select().from(user).where(eq(user.id, userSession));
+  const banStatus = await db
+    .select()
+    .from(user)
+    .where(eq(user.id, userSession));
   if (banStatus[0]?.banned) redirect("/banned");
 
-const { detailsProfil: rawParam } = await props.params;
-const detailsProfil = decodeURIComponent(rawParam);
-
+  const { detailsProfil: rawParam } = await props.params;
+  const detailsProfil = decodeURIComponent(rawParam);
 
   // On cherche l'utilisateur par son nom (l'URL)
   const userResult = await db
@@ -49,8 +57,14 @@ const detailsProfil = decodeURIComponent(rawParam);
       programmeName: programmesTable.name,
     })
     .from(projectsTable)
-    .innerJoin(promotionsTable, eq(projectsTable.promotionId, promotionsTable.id))
-    .innerJoin(programmesTable, eq(projectsTable.programmeId, programmesTable.id))
+    .innerJoin(
+      promotionsTable,
+      eq(projectsTable.promotionId, promotionsTable.id),
+    )
+    .innerJoin(
+      programmesTable,
+      eq(projectsTable.programmeId, programmesTable.id),
+    )
     .where(eq(projectsTable.userId, profil.id));
 
   return (
@@ -84,7 +98,6 @@ const detailsProfil = decodeURIComponent(rawParam);
       </div>
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-
         {/* En-tête section projets */}
         <div className="flex items-baseline gap-4 mb-8">
           <h2 className="text-2xl font-bold text-slate-800">Projets</h2>
@@ -106,60 +119,69 @@ const detailsProfil = decodeURIComponent(rawParam);
               const fallback = getFallback(project.gitHubLink);
               return (
                 <div>
-                <Link
-                  key={project.id}
-                  href={`/${project.adresseweb}`}
-                  className="group block bg-white rounded-xl border border-slate-200 overflow-hidden
+                  <Link
+                    key={project.id}
+                    href={`/${project.adresseweb}`}
+                    className="group block bg-white rounded-xl border border-slate-200 overflow-hidden
                              transition-all duration-200
                              hover:border-blue-300 hover:shadow-lg hover:shadow-blue-100
                              hover:-translate-y-1"
-                >
-                  {/* Image */}
-                  <div className="relative w-full h-44 bg-blue-50 overflow-hidden">
-                    <ImageProjet
-                      src={getGithubImage(project.gitHubLink) ?? fallback}
-                      fallback={fallback}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-
-                  {/* Corps */}
-                  <div className="p-5">
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      <span className="text-xs font-mono text-blue-400 uppercase tracking-widest">
-                        {project.promotionName}
-                      </span>
-                      <span className="text-xs font-mono text-slate-400">
-                        · {project.programmeName}
-                      </span>
+                  >
+                    {/* Image */}
+                    <div className="relative w-full h-44 bg-blue-50 overflow-hidden">
+                      <ImageProjet
+                        src={getGithubImage(project.gitHubLink) ?? fallback}
+                        fallback={fallback}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
                     </div>
-                    <h3 className="text-base font-bold text-slate-800 leading-snug
-                                    group-hover:text-blue-600 transition-colors duration-150">
-                      {project.title}
-                    </h3>
 
-                    {/* Flèche */}
-                    <div className="mt-4 flex items-center justify-between">
-                      <span className="text-xs text-slate-400 font-mono">
-                        Voir le projet
-                      </span>
-                      <span className="w-7 h-7 rounded-full border border-blue-200 bg-blue-50
+                    {/* Corps */}
+                    <div className="p-5">
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        <span className="text-xs font-mono text-blue-400 uppercase tracking-widest">
+                          {project.promotionName}
+                        </span>
+                        <span className="text-xs font-mono text-slate-400">
+                          · {project.programmeName}
+                        </span>
+                      </div>
+                      <h3
+                        className="text-base font-bold text-slate-800 leading-snug
+                                    group-hover:text-blue-600 transition-colors duration-150"
+                      >
+                        {project.title}
+                      </h3>
+
+                      {/* Flèche */}
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-xs text-slate-400 font-mono">
+                          Voir le projet
+                        </span>
+                        <span
+                          className="w-7 h-7 rounded-full border border-blue-200 bg-blue-50
                                          flex items-center justify-center text-blue-400 text-sm
                                          group-hover:bg-blue-400 group-hover:text-white group-hover:border-blue-400
-                                         transition-all duration-150">
-                        ↗
-                      </span>
+                                         transition-all duration-150"
+                        >
+                          ↗
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              
-                                        <div className="flex items-center gap-2 shrink-0">
-                                        <BouttonSupprimer id={project.id} />
-                                      </div>
-                                      </div>
-              );
+                  </Link>
 
+                  <div className="flex items-center gap-2 shrink-0">
+                    <BouttonSupprimer id={project.id} />
+                    <BoutonModifier
+                      title={project.title}
+                      gitHubLink={project.gitHubLink}
+                      demoLink={project.demoLink ?? undefined}
+                      id={project.id}
+                    />
+                  </div>
+                </div>
+              );
             })}
           </div>
         )}
