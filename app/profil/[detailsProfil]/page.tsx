@@ -13,7 +13,6 @@ import Link from "next/link";
 import ImageProjet from "@/app/components/module/ImageProjet";
 import { getGithubImage, getFallback } from "@/app/components/module/getImages";
 import BouttonSupprimer from "@/app/components/module/buttonSupprimer";
-import ModalDeleteProject from "@/app/components/modals/ModalDeleteProject";
 import BoutonModifier from "@/app/components/module/buttonModifier";
 
 export default async function detailsProfil(props: {
@@ -31,20 +30,14 @@ export default async function detailsProfil(props: {
   const { detailsProfil: rawParam } = await props.params;
   const detailsProfil = decodeURIComponent(rawParam);
 
-  // On cherche l'utilisateur par son nom (l'URL)
   const userResult = await db
-    .select({
-      id: user.id,
-      name: user.name,
-      admin: user.admin,
-    })
+    .select({ id: user.id, name: user.name, admin: user.admin })
     .from(user)
     .where(eq(user.name, detailsProfil));
 
   const profil = userResult[0];
   if (!profil) notFound();
 
-  // On récupère ses projets publiés avec promotion et programme
   const projets = await db
     .select({
       id: projectsTable.id,
@@ -67,6 +60,9 @@ export default async function detailsProfil(props: {
     )
     .where(eq(projectsTable.userId, profil.id));
 
+  // Vérifie si l'utilisateur connecté est le propriétaire du profil
+  const isOwner = userSession === profil.id;
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Hero strip */}
@@ -79,7 +75,6 @@ export default async function detailsProfil(props: {
             ← Retour à la vitrine
           </Link>
           <div className="flex items-center gap-4 mt-4">
-            {/* Avatar initiale */}
             <div className="w-14 h-14 rounded-full bg-blue-900 flex items-center justify-center shrink-0">
               <span className="text-white text-xl font-bold font-mono">
                 {profil.name.charAt(0).toUpperCase()}
@@ -108,7 +103,7 @@ export default async function detailsProfil(props: {
         </div>
 
         {projets.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24 gap-4">
+          <div className="flex flex-col items-center justify-center py-24">
             <p className="text-slate-400 font-mono text-sm">
               Aucun projet pour le moment.
             </p>
@@ -118,14 +113,14 @@ export default async function detailsProfil(props: {
             {projets.map((project) => {
               const fallback = getFallback(project.gitHubLink);
               return (
-                <div>
+                <div key={project.id} className="flex flex-col">
+                  {/* Carte projet */}
                   <Link
-                    key={project.id}
                     href={`/${project.adresseweb}`}
-                    className="group block bg-white rounded-xl border border-slate-200 overflow-hidden
-                             transition-all duration-200
-                             hover:border-blue-300 hover:shadow-lg hover:shadow-blue-100
-                             hover:-translate-y-1"
+                    className="group flex-1 block bg-white rounded-xl border border-slate-200 overflow-hidden
+                               transition-all duration-200
+                               hover:border-blue-300 hover:shadow-lg hover:shadow-blue-100
+                               hover:-translate-y-1"
                   >
                     {/* Image */}
                     <div className="relative w-full h-44 bg-blue-50 overflow-hidden">
@@ -149,21 +144,19 @@ export default async function detailsProfil(props: {
                       </div>
                       <h3
                         className="text-base font-bold text-slate-800 leading-snug
-                                    group-hover:text-blue-600 transition-colors duration-150"
+                                      group-hover:text-blue-600 transition-colors duration-150"
                       >
                         {project.title}
                       </h3>
-
-                      {/* Flèche */}
                       <div className="mt-4 flex items-center justify-between">
                         <span className="text-xs text-slate-400 font-mono">
                           Voir le projet
                         </span>
                         <span
                           className="w-7 h-7 rounded-full border border-blue-200 bg-blue-50
-                                         flex items-center justify-center text-blue-400 text-sm
-                                         group-hover:bg-blue-400 group-hover:text-white group-hover:border-blue-400
-                                         transition-all duration-150"
+                                           flex items-center justify-center text-blue-400 text-sm
+                                           group-hover:bg-blue-400 group-hover:text-white group-hover:border-blue-400
+                                           transition-all duration-150"
                         >
                           ↗
                         </span>
@@ -171,15 +164,18 @@ export default async function detailsProfil(props: {
                     </div>
                   </Link>
 
-                  <div className="flex items-center gap-2 shrink-0">
-                    <BouttonSupprimer id={project.id} />
-                    <BoutonModifier
-                      title={project.title}
-                      gitHubLink={project.gitHubLink}
-                      demoLink={project.demoLink ?? undefined}
-                      id={project.id}
-                    />
-                  </div>
+                  {/* Boutons d'action — visibles uniquement pour le propriétaire */}
+                  {isOwner && (
+                    <div className="flex items-center gap-2 mt-2 px-1">
+                      <BoutonModifier
+                        id={project.id}
+                        title={project.title}
+                        gitHubLink={project.gitHubLink}
+                        demoLink={project.demoLink ?? undefined}
+                      />
+                      <BouttonSupprimer id={project.id} />
+                    </div>
+                  )}
                 </div>
               );
             })}

@@ -67,4 +67,6 @@ export async function modifier(formData: FormData) {
       })
       .where(eq(projectsTable.id, id));
   }
+
+  refresh();
 }
