@@ -40,8 +40,17 @@ export default function Header({ openModal, openModalSignOut }: HeaderProps) {
             </div>
           </Link>
 
+
           {/* Actions */}
           <div className="flex items-center gap-2">
+            
+  {/* Message de bienvenue */}
+  {userConnect && userName && (
+    <span className="hidden sm:block text-sm text-slate-400 font-mono">
+      Bonjour, <span className="text-blue-500 font-medium">{userName}</span> 👋
+    </span>
+  )}
+  <div className="w-px h-5 bg-blue-100" />
 
             {/* Admin */}
             {admin && (
