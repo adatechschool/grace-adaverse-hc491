@@ -6,9 +6,9 @@ interface ModalProps {
   id: number;
 }
 
-export default function ModalDeleteProject({ onClose, id }: ModalProps) {
+export default function ModalDeleteTest({ onClose, id }: ModalProps) {
   function onDelete() {
-     atomiser(id);
+    //  atomiser(id);
     onClose();
   }
 
